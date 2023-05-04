@@ -1,6 +1,8 @@
 class Bandera extends Entidad {
+  // Variables
   float resistencia;
   
+  // Metodos
   Bandera(float pos_x, float pos_y, float resistencia, float mascara_colision) {
     super(pos_x, pos_y, mascara_colision);
     this.resistencia = resistencia;
