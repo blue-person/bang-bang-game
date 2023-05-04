@@ -22,6 +22,16 @@ Boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
   return (transparencia == 255);
 }
 
+void reproducir_sonido(String nombre_elemento) {
+  SoundFile archivo_sonido = efectos_sonido.get(nombre_elemento);
+  archivo_sonido.play();
+}
+
+void reproducir_cancion(String nombre_elemento) {
+  SoundFile archivo_sonido = canciones.get(nombre_elemento);
+  archivo_sonido.play();
+}
+
 void mostrar_mensaje_inicio() {
   fill(COLOR_NEGRO);
   textAlign(CENTER);

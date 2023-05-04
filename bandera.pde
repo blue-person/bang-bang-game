@@ -18,7 +18,7 @@ class Bandera extends Entidad {
   }
   
   void reducir_resistencia(float fuerza_impacto) {
-    if (resistencia != 0) {
+    if (resistencia > 0) {
       resistencia -= fuerza_impacto;
     } else {
       this.destruir();
