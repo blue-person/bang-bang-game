@@ -1,3 +1,21 @@
+// Funciones generales
+void determinar_impacto_proyectil(Proyectil proyectil, Bandera bandera) {
+  // Variables
+  String estado_actual = proyectil.obtener_estado();
+  boolean proyectil_moviendose = (estado_actual == "moviendose");
+  boolean proyectil_colisiono = proyectil.verificar_colision(bandera);
+  
+  if (proyectil_moviendose && proyectil_colisiono) {
+    // Gestionar el impacto a la bandera
+    float fuerza_impacto = proyectil.determinar_fuerza_impacto();
+    bandera.reducir_resistencia(fuerza_impacto);
+    
+    // Destruir el proyectil
+    proyectil.destruir();
+  }
+}
+
+// Clase
 class Proyectil extends Entidad {
   // Constantes
   final float MASA = 0.85;
@@ -7,21 +25,36 @@ class Proyectil extends Entidad {
   float pos_x_inicial, pos_y_inicial, pos_x_posterior, pos_y_posterior;
   float direccion, velocidad, angulo, velocidad_horizontal, velocidad_vertical, tiempo_aire;
   
-  // Metodos
+  // Animaciones
+  Animacion animacion_normal = new Animacion("proyectil_normal", 2);
+  Animacion animacion_explosion = new Animacion("explosion_normal", 41);
+  
+  // Constructor
   Proyectil(float pos_x, float pos_y, float direccion, float angulo, float velocidad, float mascara_colision) {
     super(pos_x, pos_y, mascara_colision);
-    
     this.direccion = direccion;
+    this.velocidad = velocidad;
+    this.angulo = radians(angulo);
     this.pos_x_inicial = pos_x;
     this.pos_y_inicial = pos_y;
     this.pos_x_posterior = 0;
     this.pos_y_posterior = 0;
-    this.velocidad = velocidad;
-    this.angulo = radians(angulo);
   }
   
-  void dibujar() {
-    circle(pos_x, pos_y, mascara_colision);
+  // Metodos
+  void mostrar() {
+    imageMode(CENTER);
+    switch(estado_actual) {
+      case "normal":
+        animacion_normal.mostrar(pos_x, pos_y);
+        break;
+      case "moviendose":
+        animacion_normal.mostrar(pos_x, pos_y);
+        break;
+      case "explotando":
+        animacion_explosion.mostrar(pos_x, pos_y);
+        break;
+    }
   }
   
   void mover() {
@@ -39,17 +72,35 @@ class Proyectil extends Entidad {
     pos_y = pos_y_inicial + pos_y_posterior;
     
     // Reajustar el estado
-    estado_actual = "movimiendose";
+    estado_actual = "moviendose";
+  }
+  
+  void actualizar_estado() {
+    // Variables
+    boolean proyectil_explotando = (estado_actual == "explotando");
+    boolean proyectil_destruido = (estado_actual == "destruido");
+    
+    // Comprobacion de estados
+    if (!proyectil_explotando && !proyectil_destruido) {
+      mover();
+    } else if (proyectil_explotando) {
+      destruir();
+    }
+    
+    // Mostrar la entidad
+    mostrar();
   }
   
   void destruir() {
-    rectMode(CENTER);
-    rect(pos_x, pos_y, mascara_colision, mascara_colision);
-    estado_actual = "destruido";
+    if (animacion_explosion.animacion_termino()) {
+      estado_actual = "destruido";
+    } else {
+      estado_actual = "explotando";
+    }
   }
   
   String obtener_estado() {
-    return this.estado_actual;
+    return estado_actual;
   }
   
   float determinar_fuerza_impacto() {

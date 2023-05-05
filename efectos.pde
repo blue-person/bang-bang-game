@@ -2,7 +2,7 @@
 int transparencia = 255;
 
 // Funciones
-Boolean aclarar_pantalla(int color_hexadecimal, float velocidad) {
+boolean aclarar_pantalla(int color_hexadecimal, float velocidad) {
   if (transparencia <= 255) {
     transparencia -= (1 * velocidad);
   }
@@ -12,7 +12,7 @@ Boolean aclarar_pantalla(int color_hexadecimal, float velocidad) {
   return (transparencia <= 0);
 }
 
-Boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
+boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
   if (transparencia >= 0) {
     transparencia += (1 * velocidad);
   }
@@ -22,14 +22,25 @@ Boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
   return (transparencia == 255);
 }
 
-void reproducir_sonido(String nombre_elemento) {
-  SoundFile archivo_sonido = efectos_sonido.get(nombre_elemento);
+void reproducir_audio(String nombre_elemento) {
+  AudioPlayer archivo_sonido = audios.get(nombre_elemento);
   archivo_sonido.play();
 }
 
 void reproducir_cancion(String nombre_elemento) {
-  SoundFile archivo_sonido = canciones.get(nombre_elemento);
-  archivo_sonido.play();
+  AudioPlayer archivo_sonido = audios.get(nombre_elemento);
+ 
+  if (!archivo_sonido.isPlaying()) {
+    archivo_sonido.loop();
+  }
+}
+
+void detener_audio(String nombre_elemento) {
+  AudioPlayer archivo_sonido = audios.get(nombre_elemento);
+  
+  if (archivo_sonido.isPlaying()) {
+    archivo_sonido.close();
+  }
 }
 
 void mostrar_mensaje_inicio() {

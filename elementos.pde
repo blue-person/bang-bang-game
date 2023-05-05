@@ -1,14 +1,33 @@
 // Colecciones
-HashMap<String, SoundFile> efectos_sonido = new HashMap<String, SoundFile>();
-HashMap<String, SoundFile> canciones = new HashMap<String, SoundFile>();
+HashMap<String, AudioPlayer> audios = new HashMap<String, AudioPlayer>();
+HashMap<String, PImage> imagenes = new HashMap<String, PImage>();
 
 // Funciones
-void cargar_sonidos() {
-  efectos_sonido.put("confirmar_opcion", new SoundFile(this, "audio/efectos/confirmar_opcion.wav"));
+void cargar_audios() {
+  // Inicializar el objeto
+  minim = new Minim(this);
+  
+  // Efectos de sonido
+  audios.put("confirmar_opcion", minim.loadFile("media/audio/efectos/confirmar_opcion.wav", 1024));
+  
+  // Canciones
+  audios.put("menu_inicio", minim.loadFile("media/audio/canciones/menu_inicio.wav", 1024));
+  audios.put("batalla_normal", minim.loadFile("media/audio/canciones/batalla_normal.wav", 1024));
+  audios.put("batalla_acelerada", minim.loadFile("media/audio/canciones/batalla_acelerada.wav", 1024));
+  audios.put("batalla_intensa", minim.loadFile("media/audio/canciones/batalla_intensa.wav", 1024));
 }
 
-void cargar_canciones() {
-  canciones.put("menu_inicio", new SoundFile(this, "audio/canciones/menu_inicio.wav"));
-  canciones.put("batalla_normal", new SoundFile(this, "audio/canciones/batalla_normal.wav"));
-  canciones.put("batalla_intensa", new SoundFile(this, "audio/canciones/batalla_intensa.wav"));
+void cargar_sprites(String nombre_sprite, int cantidad_sprites) {
+  for (int i = 0; i < cantidad_sprites; i++) {
+    String identificador_imagen = nombre_sprite + "_" + str(i);
+    String ubicacion_imagen = "media/sprites/" + nombre_sprite + "/" + str(i) + ".png";
+    imagenes.put(identificador_imagen, loadImage(ubicacion_imagen));
+  }
+}
+
+void cargar_imagenes() {
+  cargar_sprites("proyectil_normal", 2);
+  cargar_sprites("explosion_suave", 5);
+  cargar_sprites("explosion_normal", 41);
+  cargar_sprites("explosion_intensa", 30);
 }
