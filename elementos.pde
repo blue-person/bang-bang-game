@@ -15,6 +15,13 @@ void cargar_audios() {
   audios.put("batalla_normal", minim.loadFile("media/audio/canciones/batalla_normal.wav", 1024));
   audios.put("batalla_acelerada", minim.loadFile("media/audio/canciones/batalla_acelerada.wav", 1024));
   audios.put("batalla_intensa", minim.loadFile("media/audio/canciones/batalla_intensa.wav", 1024));
+  
+  // Voces
+  audios.put("anunciador_bien", minim.loadFile("media/audio/voces/anunciador_bien.wav", 1024));
+  audios.put("anunciador_muy_bien", minim.loadFile("media/audio/voces/anunciador_muy_bien.wav", 1024));
+  audios.put("anunciador_genial", minim.loadFile("media/audio/voces/anunciador_genial.wav", 1024));
+  audios.put("anunciador_alucinante", minim.loadFile("media/audio/voces/anunciador_alucinante.wav", 1024));
+  audios.put("anunciador_sorprendente", minim.loadFile("media/audio/voces/anunciador_sorprendente.wav", 1024));
 }
 
 void cargar_sprites(String nombre_sprite, int cantidad_sprites) {
