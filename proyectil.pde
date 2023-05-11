@@ -2,7 +2,7 @@
 void determinar_impacto_proyectil(Proyectil proyectil, Bandera bandera) {
   // Variables
   String estado_actual = proyectil.obtener_estado();
-  boolean proyectil_moviendose = (estado_actual == "moviendose");
+  boolean proyectil_moviendose = estado_actual.equals("moviendose");
   boolean proyectil_colisiono = proyectil.verificar_colision(bandera);
   
   if (proyectil_moviendose && proyectil_colisiono) {
@@ -26,7 +26,7 @@ class Proyectil extends Entidad {
   float direccion, velocidad, angulo, velocidad_horizontal, velocidad_vertical, tiempo_aire;
   
   // Animaciones
-  Animacion animacion_normal = new Animacion("proyectil_normal", 2);
+  Animacion animacion_normal = new Animacion("proyectil", 2);
   Animacion animacion_explosion = new Animacion("explosion_normal", 41);
   
   // Constructor
@@ -43,7 +43,6 @@ class Proyectil extends Entidad {
   
   // Metodos
   void mostrar() {
-    imageMode(CENTER);
     switch(estado_actual) {
       case "normal":
         animacion_normal.mostrar(pos_x, pos_y);
@@ -77,8 +76,8 @@ class Proyectil extends Entidad {
   
   void actualizar_estado() {
     // Variables
-    boolean proyectil_explotando = (estado_actual == "explotando");
-    boolean proyectil_destruido = (estado_actual == "destruido");
+    boolean proyectil_explotando = estado_actual.equals("explotando");
+    boolean proyectil_destruido = estado_actual.equals("destruido");
     
     // Comprobacion de estados
     if (!proyectil_explotando && !proyectil_destruido) {

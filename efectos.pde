@@ -19,7 +19,7 @@ boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
   
   fill(color_hexadecimal, transparencia);
   rect(0, 0, width, height);
-  return (transparencia == 255);
+  return (transparencia >= 255);
 }
 
 void reproducir_audio(String nombre_elemento) {
@@ -47,4 +47,10 @@ void mostrar_mensaje_inicio() {
   fill(COLOR_NEGRO);
   textAlign(CENTER);
   text("Presiona Enter para continuar", width / 2, height / 2);
+}
+
+void mostrar_mensaje_resultados(String ganador) {
+  fill(COLOR_NEGRO);
+  textAlign(CENTER);
+  text("El ganador fue: " + ganador, width / 2, height / 2);
 }

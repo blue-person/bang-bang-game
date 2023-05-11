@@ -22,7 +22,22 @@ class Animacion {
     } else {
       indice_actual = 1;
     }
+    imageMode(CENTER);
     image(lista_imagenes[indice_actual], pos_x, pos_y);
+  }
+  
+  
+  void mostrar(float pos_x, float pos_y, int direccion) {
+    if (cantidad_imagenes > 2) {
+      indice_actual = (indice_actual + 1) % cantidad_imagenes;
+    } else {
+      indice_actual = 1;
+    }
+    imageMode(CENTER);
+    pushMatrix();
+    scale(direccion, 1);
+    image(lista_imagenes[indice_actual], direccion * pos_x, pos_y);
+    popMatrix();
   }
   
   boolean animacion_termino() {
