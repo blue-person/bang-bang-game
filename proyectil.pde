@@ -26,8 +26,8 @@ class Proyectil extends Entidad {
   float direccion, velocidad, angulo, velocidad_horizontal, velocidad_vertical, tiempo_aire;
   
   // Animaciones
-  Animacion animacion_normal = new Animacion("proyectil", 2);
-  Animacion animacion_explosion = new Animacion("explosion_normal", 41);
+  Animacion animacion_normal = new Animacion("proyectil", 1);
+  Animacion animacion_explosion = new Animacion("explosion_normal", 40);
   
   // Constructor
   Proyectil(float pos_x, float pos_y, float direccion, float angulo, float velocidad, float mascara_colision) {

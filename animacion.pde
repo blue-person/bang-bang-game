@@ -17,22 +17,14 @@ class Animacion {
   
   // Metodos
   void mostrar(float pos_x, float pos_y) {
-    if (cantidad_imagenes > 2) {
-      indice_actual = (indice_actual + 1) % cantidad_imagenes;
-    } else {
-      indice_actual = 1;
-    }
+    indice_actual = (indice_actual + 1) % cantidad_imagenes;
     imageMode(CENTER);
     image(lista_imagenes[indice_actual], pos_x, pos_y);
   }
   
   
   void mostrar(float pos_x, float pos_y, int direccion) {
-    if (cantidad_imagenes > 2) {
-      indice_actual = (indice_actual + 1) % cantidad_imagenes;
-    } else {
-      indice_actual = 1;
-    }
+    indice_actual = (indice_actual + 1) % cantidad_imagenes;
     imageMode(CENTER);
     pushMatrix();
     scale(direccion, 1);

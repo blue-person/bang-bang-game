@@ -33,13 +33,14 @@ void cargar_sprites(String nombre_sprite, int cantidad_sprites) {
 }
 
 void cargar_imagenes() {
-  cargar_sprites("proyectil", 2);
-  cargar_sprites("bandera_a", 7);
-  cargar_sprites("bandera_b", 7);
-  cargar_sprites("base_canon", 2);
-  cargar_sprites("canon_a", 2);
-  cargar_sprites("canon_b", 2);
-  cargar_sprites("explosion_suave", 5);
-  cargar_sprites("explosion_normal", 41);
-  cargar_sprites("explosion_intensa", 30);
+  cargar_sprites("proyectil", 1);
+  cargar_sprites("bandera_a", 6);
+  cargar_sprites("bandera_b", 6);
+  cargar_sprites("base_canon", 1);
+  cargar_sprites("canon_a", 1);
+  cargar_sprites("canon_b", 1);
+  cargar_sprites("fuego", 10);
+  cargar_sprites("explosion_suave", 12);
+  cargar_sprites("explosion_normal", 40);
+  cargar_sprites("explosion_intensa", 29);
 }

@@ -2,24 +2,28 @@
 int transparencia = 255;
 
 // Funciones
-boolean aclarar_pantalla(int color_hexadecimal, float velocidad) {
-  if (transparencia <= 255) {
+boolean aclarar_pantalla(float velocidad) {
+  if (transparencia >= 0) {
     transparencia -= (1 * velocidad);
   }
   
-  fill(color_hexadecimal, transparencia);
+  transparencia = max(0, transparencia);
+  
+  fill(COLOR_BLANCO, transparencia);
   rect(0, 0, width, height);
   return (transparencia <= 0);
 }
 
-boolean oscurecer_pantalla(int color_hexadecimal, float velocidad) {
-  if (transparencia >= 0) {
+boolean oscurecer_pantalla(float velocidad) {
+  if (transparencia <= 1) {
     transparencia += (1 * velocidad);
   }
   
-  fill(color_hexadecimal, transparencia);
+  transparencia = min(1, transparencia);
+  
+  fill(COLOR_NEGRO, transparencia);
   rect(0, 0, width, height);
-  return (transparencia >= 255);
+  return (transparencia >= 1);
 }
 
 void reproducir_audio(String nombre_elemento) {
