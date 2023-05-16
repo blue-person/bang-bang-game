@@ -15,6 +15,7 @@ void cargar_audios() {
   audios.put("batalla_normal", minim.loadFile("media/audio/canciones/batalla_normal.wav", 1024));
   audios.put("batalla_acelerada", minim.loadFile("media/audio/canciones/batalla_acelerada.wav", 1024));
   audios.put("batalla_intensa", minim.loadFile("media/audio/canciones/batalla_intensa.wav", 1024));
+  audios.put("presentacion_resultados", minim.loadFile("media/audio/canciones/presentacion_resultados.wav", 1024));
   
   // Voces
   audios.put("anunciador_bien", minim.loadFile("media/audio/voces/anunciador_bien.wav", 1024));
@@ -44,4 +45,8 @@ void cargar_imagenes() {
   cargar_sprites("explosion_normal", 40);
   cargar_sprites("explosion_intensa", 29);
   cargar_sprites("logo_universidad", 1);
+  cargar_sprites("monte_a", 1);
+  cargar_sprites("monte_b", 1);
+  cargar_sprites("monte_c", 1);
+  cargar_sprites("nubes", 1);
 }

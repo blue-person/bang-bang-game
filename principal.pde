@@ -19,6 +19,7 @@ final int IZQUIERDA = -1;
 // Variables
 int tecla_presionada = 0;
 boolean permitir_espera_presentacion = true;
+boolean permitir_transicion_juego = false;
 String estado_actual_juego = "presentacion";
 String jugador_actual = JUGADOR_A;
 String ganador;
@@ -60,25 +61,26 @@ void draw() {
   switch(estado_actual_juego) {
     case "presentacion":
       // Variables
-      boolean objeto_opaco = false;
+      boolean objeto_visible = false;
       boolean objeto_transparente = false;
       
       // Aplicar el fondo
       background(COLOR_BLANCO);
       
       // Aparecer gradualmente
-      objeto_opaco = mostrar_gradualmente(3.5);
-      if (objeto_opaco) {
+      objeto_visible = efecto_fade_in("imagen", COLOR_BLANCO, 3.5);
+      if (objeto_visible) {
         if (permitir_espera_presentacion) {
           permitir_espera_presentacion = false;
           delay(500);
         }
-        objeto_transparente = ocultar_gradualmente(4.5);
+        objeto_transparente = efecto_fade_out("imagen", COLOR_BLANCO, 4.5);
       }
       
       // Desvanecer gradualmente
       if (objeto_transparente) {
         delay(250);
+        reiniciar_valores_opacidad();
         estado_actual_juego = "menu";
       }
       
@@ -90,13 +92,19 @@ void draw() {
 
       break;
     case "menu":
+      // Aplicar el fondo
       background(COLOR_BLANCO);
       
-      // Efectos especiales
-      reproducir_cancion("menu_inicio");
-      mostrar_mensaje_inicio();
+      // Efecto de fade-in
+      boolean rectangulo_visible = efecto_fade_in("figura", COLOR_BLANCO, 5);
+      rect(0, 0, width, height);
       
-      if (boton_presionado()) {
+      // Gestion del mensaje de inicio
+      reproducir_cancion("menu_inicio");
+      mostrar_mensaje_inicio(opacidad_fade_in);
+      
+      // Cambiar de estado
+      if (rectangulo_visible && boton_presionado()) {
         // Determinar estado de los audios
         detener_audio("menu_inicio");
         reproducir_audio("confirmar_opcion");
@@ -105,21 +113,32 @@ void draw() {
         iniciar_entidades();
         
         // Cambiar el estado del juego
-        estado_actual_juego = "juego";
-        delay(100);
+        permitir_transicion_juego = efecto_fade_in("figura", COLOR_NEGRO, 5);
+        rect(0, 0, width, height);
       }
+      
+      if (permitir_transicion_juego) {
+          delay(100);
+          estado_actual_juego = "juego";
+        }
       break;
     case "juego":
-      background(COLOR_BLANCO);
+      // Variables
       float angulo_seleccionado = obtener_valor_angulo();
       float velocidad_seleccionada = obtener_valor_velocidad();
       
+      // Aplicar el fondo
+      background(COLOR_BLANCO);
+      
+      // Logica
       if (ganador != null) {
         proyectil_a = null;
         proyectil_b = null;
         
-        boolean pantalla_oscurecida = oscurecer_pantalla(2.5);
+        boolean pantalla_oscurecida = efecto_fade_out("figura", 0, 2.5);
+        rect(0, 0, width, height);
         if (pantalla_oscurecida) {
+          reiniciar_valores_opacidad();
           estado_actual_juego = "resultados";
         }
       } else {
@@ -202,14 +221,37 @@ void draw() {
           }
         }
         
+        // Manejo de la musica
+        if (bandera_a != null && bandera_b != null) {
+          boolean batalla_normal = bandera_a.obtener_intensidad_batalla() == "normal" || bandera_b.obtener_intensidad_batalla() == "normal";
+          boolean batalla_acelerada = bandera_a.obtener_intensidad_batalla() == "inestable" || bandera_b.obtener_intensidad_batalla() == "inestable";
+          boolean batalla_intensa = bandera_a.obtener_intensidad_batalla() == "critico" || bandera_b.obtener_intensidad_batalla() == "critico";
+
+          if (batalla_normal) {
+            reproducir_cancion("batalla_normal");
+          } else if (batalla_acelerada) {
+            detener_audio("batalla_normal");
+            reproducir_cancion("batalla_acelerada");
+          } else if (batalla_intensa) {
+            detener_audio("batalla_acelerada");
+            reproducir_cancion("batalla_intensa");
+          }
+        }
+        
         // Se actualiza el estado de los canones
         canon_a.mostrar(angulo_seleccionado);
         canon_b.mostrar(angulo_seleccionado);
       }
       break;
     case "resultados":
-      mostrar_mensaje_resultados(ganador);
+      // Musica de ganador
+      detener_audio("batalla_intensa");
+      reproducir_cancion("presentacion_resultados");
       
+      // Mostrar ganador
+      mostrar_mensaje_resultados(ganador, opacidad_fade_in);
+      
+      // Reiniciar
       if (boton_presionado()) {
         estado_actual_juego = "menu";
       }

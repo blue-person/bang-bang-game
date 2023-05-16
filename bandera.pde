@@ -1,6 +1,7 @@
 class Bandera extends Entidad {
   // Variables
-  float resistencia;
+  float resistencia_actual;
+  float resistencia_total;
   
   // Animaciones
   Animacion animacion_fuego = new Animacion("fuego", 10);
@@ -10,12 +11,15 @@ class Bandera extends Entidad {
    // Constructor
   Bandera(float pos_x, float pos_y, float resistencia, float mascara_colision, String animacion_bandera) {
     super(pos_x, pos_y, mascara_colision);
-    this.resistencia = resistencia;
+    this.resistencia_actual = resistencia;
+    this.resistencia_total = resistencia;
     this.animacion_bandera = new Animacion(animacion_bandera, 6);
   }
   
   // Metodos
   void mostrar() {
+    println(resistencia_actual);
+    
     circle(pos_x, pos_y, mascara_colision);
     switch(estado_actual) {
       case "normal":
@@ -33,7 +37,7 @@ class Bandera extends Entidad {
   
   void actualizar_estado() {
     // Determinar si aun le queda resistencia
-    if (resistencia <= 0) {
+    if (resistencia_actual <= 0) {
       destruir();
     }
     
@@ -50,9 +54,9 @@ class Bandera extends Entidad {
   }
   
   void reducir_resistencia(float fuerza_impacto) {
-    if (resistencia > 0) {
+    if (resistencia_actual > 0) {
       estado_actual = "impactado";
-      resistencia -= fuerza_impacto;
+      resistencia_actual -= fuerza_impacto;
     } else {
       destruir();
     }
@@ -63,6 +67,20 @@ class Bandera extends Entidad {
   }
   
   float obtener_resistencia() {
-    return resistencia;
+    return resistencia_actual;
+  }
+  
+  String obtener_intensidad_batalla() {
+    float porcentaje = resistencia_actual / resistencia_total;
+
+    if (porcentaje >= 0.8 && porcentaje <= 1.0) {
+      return "normal";
+    } else if (porcentaje >= 0.5 && porcentaje < 0.8) {
+      return "inestable";
+    } else if (porcentaje < 0.5) {
+      return "critico";
+    } else {
+      return "desconocido";
+    }
   }
 }

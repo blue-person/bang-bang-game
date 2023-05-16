@@ -1,47 +1,51 @@
-// Variables
-int transparencia = 255;
+// Variables iniciales
+float opacidad_fade_in = 0;
+float opacidad_fade_out = 255;
 
 // Funciones
-boolean aclarar_pantalla(float velocidad) {
-  if (transparencia >= 0) {
-    transparencia -= (1 * velocidad);
-  }
-  
-  transparencia = max(0, transparencia);
-  
-  fill(COLOR_BLANCO, transparencia);
-  rect(0, 0, width, height);
-  return (transparencia <= 0);
+void reiniciar_valores_opacidad() {
+  opacidad_fade_in = 0;
+  opacidad_fade_out = 255;
 }
 
-boolean oscurecer_pantalla(float velocidad) {
-  if (transparencia <= 1) {
-    transparencia += (1 * velocidad);
+boolean efecto_fade_in(String tipo_elemento, int color_transicion, float velocidad) {
+  // Cambiar opacidad
+  if (opacidad_fade_in < 255) {
+    opacidad_fade_in += velocidad;
   }
   
-  transparencia = min(1, transparencia);
+  // Determinar elemento
+  switch(tipo_elemento) {
+    case "imagen":
+      tint(color_transicion, opacidad_fade_in);
+      break;
+    case "figura":
+      fill(color_transicion, opacidad_fade_in);
+      break;
+  }
   
-  fill(COLOR_NEGRO, transparencia);
-  rect(0, 0, width, height);
-  return (transparencia >= 1);
+  // Determinar si ya acabo la transicion
+  return (opacidad_fade_in >= 255);
 }
 
-float opacidad_objeto = 0;
-boolean mostrar_gradualmente(float velocidad) {
-  if (opacidad_objeto < 255) {
-    opacidad_objeto += velocidad;
+boolean efecto_fade_out(String tipo_elemento, int color_transicion, float velocidad) {
+  // Cambiar opacidad
+  if (opacidad_fade_out > 0) {
+    opacidad_fade_out -= velocidad;
   }
-  tint(255, opacidad_objeto);
-  return (opacidad_objeto >= 255);
-}
-
-float transparencia_objeto = 255;
-boolean ocultar_gradualmente(float velocidad) {
-  if (transparencia_objeto > 0) {
-    transparencia_objeto -= velocidad;
+  
+  // Determinar elemento
+  switch(tipo_elemento) {
+    case "imagen":
+      tint(color_transicion, opacidad_fade_out);
+      break;
+    case "figura":
+      fill(color_transicion, opacidad_fade_out);
+      break;
   }
-  tint(255, transparencia_objeto);
-  return (transparencia_objeto <= 0);
+  
+  // Determinar si ya acabo la transicion
+  return (opacidad_fade_out <= 0);
 }
 
 void reproducir_audio(String nombre_elemento) {
@@ -65,14 +69,14 @@ void detener_audio(String nombre_elemento) {
   }
 }
 
-void mostrar_mensaje_inicio() {
-  fill(COLOR_NEGRO);
+void mostrar_mensaje_inicio(float opacidad) {
+  fill(COLOR_NEGRO, opacidad);
   textAlign(CENTER);
   text("Presiona Enter para continuar", width / 2, height / 2);
 }
 
-void mostrar_mensaje_resultados(String ganador) {
-  fill(COLOR_NEGRO);
+void mostrar_mensaje_resultados(String ganador, float opacidad) {
+  fill(COLOR_NEGRO, opacidad);
   textAlign(CENTER);
   text("El ganador fue: " + ganador, width / 2, height / 2);
 }
