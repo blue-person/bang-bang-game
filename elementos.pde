@@ -43,4 +43,5 @@ void cargar_imagenes() {
   cargar_sprites("explosion_suave", 12);
   cargar_sprites("explosion_normal", 40);
   cargar_sprites("explosion_intensa", 29);
+  cargar_sprites("logo_universidad", 1);
 }

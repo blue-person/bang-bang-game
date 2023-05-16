@@ -26,6 +26,24 @@ boolean oscurecer_pantalla(float velocidad) {
   return (transparencia >= 1);
 }
 
+float opacidad_objeto = 0;
+boolean mostrar_gradualmente(float velocidad) {
+  if (opacidad_objeto < 255) {
+    opacidad_objeto += velocidad;
+  }
+  tint(255, opacidad_objeto);
+  return (opacidad_objeto >= 255);
+}
+
+float transparencia_objeto = 255;
+boolean ocultar_gradualmente(float velocidad) {
+  if (transparencia_objeto > 0) {
+    transparencia_objeto -= velocidad;
+  }
+  tint(255, transparencia_objeto);
+  return (transparencia_objeto <= 0);
+}
+
 void reproducir_audio(String nombre_elemento) {
   AudioPlayer archivo_sonido = audios.get(nombre_elemento);
   archivo_sonido.play();

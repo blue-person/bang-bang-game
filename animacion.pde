@@ -11,7 +11,7 @@ class Animacion {
     
     for (int i = 0; i < cantidad_imagenes; i++) {
       String nombre_archivo = nombre_elemento + "_" + str(i);
-      lista_imagenes[i] = imagenes.get(nombre_archivo) ;
+      lista_imagenes[i] = imagenes.get(nombre_archivo);
     }
   }
   

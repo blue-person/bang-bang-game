@@ -5,7 +5,7 @@ import ddf.minim.*;
 final float MASCARA_COLISION_PROYECTIL = 15;
 final float MASCARA_COLISION_BANDERA = 20;
 final float MASCARA_COLISION_CANON = 45;
-final float RESISTENCIA_BANDERAS = 100;
+final float RESISTENCIA_BANDERAS = 15;
 
 final int COLOR_NEGRO = #323957;
 final int COLOR_BLANCO = #F1F1F1;
@@ -18,6 +18,7 @@ final int IZQUIERDA = -1;
 
 // Variables
 int tecla_presionada = 0;
+boolean permitir_espera_presentacion = true;
 String estado_actual_juego = "presentacion";
 String jugador_actual = JUGADOR_A;
 String ganador;
@@ -52,14 +53,41 @@ void iniciar_entidades() {
 }
 
 void draw() {
+  // Revertir cambios antes de cambiar de estado
+  noTint();
+  
+  // Determinar estado
   switch(estado_actual_juego) {
     case "presentacion":
-      background(COLOR_NEGRO);
-  
-      boolean pantalla_despejada = aclarar_pantalla(5);
-      if (pantalla_despejada) {
+      // Variables
+      boolean objeto_opaco = false;
+      boolean objeto_transparente = false;
+      
+      // Aplicar el fondo
+      background(COLOR_BLANCO);
+      
+      // Aparecer gradualmente
+      objeto_opaco = mostrar_gradualmente(3.5);
+      if (objeto_opaco) {
+        if (permitir_espera_presentacion) {
+          permitir_espera_presentacion = false;
+          delay(500);
+        }
+        objeto_transparente = ocultar_gradualmente(4.5);
+      }
+      
+      // Desvanecer gradualmente
+      if (objeto_transparente) {
+        delay(250);
         estado_actual_juego = "menu";
       }
+      
+      // Mostrar el logo de la universidad
+      PImage logo_universidad = imagenes.get("logo_universidad_0");
+      logo_universidad.resize(200, 188);
+      imageMode(CENTER);
+      image(logo_universidad, width / 2, height / 2);
+
       break;
     case "menu":
       background(COLOR_BLANCO);
