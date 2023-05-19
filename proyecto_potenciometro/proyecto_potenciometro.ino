@@ -8,7 +8,6 @@ int VPA_1 = 0;
 int angulo = 0;
 int velocidad = 0;
 int turno=0;
-int micro = 13;
 int angulo_f1 = 0;
 int angulo_f2 = 0;
 String datos;
