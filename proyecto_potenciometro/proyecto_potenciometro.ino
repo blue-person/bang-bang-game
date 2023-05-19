@@ -1,10 +1,14 @@
 int canon1 = 5;
 int canon2 = 6;
 int botonF = 2;
+int potent_1 = 0;
+int potent_2 = 1;
 int max = 1023;
 int min = 21;
-int VPV_1 = 0; 
-int VPA_1 = 0;
+
+
+int V_1 = 0; 
+int A_1 = 0;
 int angulo = 0;
 int velocidad = 0;
 int turno=0;
@@ -28,12 +32,12 @@ Serial.begin(9600);
 }
 
 void loop() {
-VPV_1 = analogRead(0);
-VPA_1 = analogRead(1); 
-velocidad = map(VPV_1,min,max,0,999);
-angulo = map(VPA_1,min,max,-45,50);
-angulo_f1 = map(VPA_1,min,max,0,90);
-angulo_f2 = map(VPA_1,min,max,180,90);
+V_1 = analogRead(potent_1);
+A_1 = analogRead(potent_2); 
+velocidad = map(V_1,min,max,0,999);
+angulo = map(A_1,min,max,-45,50);
+angulo_f1 = map(A_1,min,max,0,90);
+angulo_f2 = map(A_1,min,max,180,90);
 if(digitalRead(botonF) == HIGH){
   Serial.print(angulo);
   Serial.print(",");
