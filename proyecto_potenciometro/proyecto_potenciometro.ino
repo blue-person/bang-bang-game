@@ -1,10 +1,10 @@
-int canon1 = 5;
-int canon2 = 6;
-int botonF = 2;
-int potent_1 = 0;
-int potent_2 = 1;
-int max = 1023;
-int min = 21;
+static int canon1 = 5;
+static int canon2 = 6;
+static int botonF = 2;
+static int potent_1 = 0;
+static int potent_2 = 1;
+static int max = 1023;
+static int min = 21;
 
 
 int V_1 = 0; 
