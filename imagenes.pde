@@ -21,11 +21,12 @@ class Imagen {
     cargar_sprites("base_canon", 1);
     cargar_sprites("canon_a", 1);
     cargar_sprites("canon_b", 1);
-    cargar_sprites("fuego", 10);
-    cargar_sprites("explosion_suave", 12);
+    cargar_sprites("fuego", 22);
+    cargar_sprites("explosion_suave", 16);
     cargar_sprites("explosion_normal", 40);
     cargar_sprites("explosion_intensa", 29);
     cargar_sprites("logo_universidad", 1);
+    cargar_sprites("logo_juego", 1);
     cargar_sprites("monte_a", 1);
     cargar_sprites("monte_b", 1);
     cargar_sprites("monte_c", 1);

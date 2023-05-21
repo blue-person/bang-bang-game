@@ -1,13 +1,20 @@
-void mostrar_mensaje_inicio(float opacidad) {
-  fill(COLOR_NEGRO, opacidad);
-  textAlign(CENTER);
-  text("Presiona Enter para continuar", width / 2, height / 2);
-}
-
-void mostrar_mensaje_resultados(String ganador, float opacidad) {
-  fill(COLOR_NEGRO, opacidad);
-  textAlign(CENTER);
-  text("El ganador fue: " + ganador, width / 2, height / 2);
+// Efectos de textos
+class Efecto {
+  // Constructor
+  Efecto() {}
+  
+  // Metodos
+  void imagen_pulsante(PImage imagen, float pos_x, float pos_y, float escala_minima, float escala_maxima) {
+    float pulso = sin(frameCount * velocidad_pulso);
+    factor_aumento = map(pulso, -1, 1, escala_minima, escala_maxima);
+    float escala_vertical = (1 - factor_aumento) * 0.5 * pos_y;
+    imageMode(CENTER);
+    pushMatrix();
+    translate(pos_x, pos_y + escala_vertical);
+    scale(factor_aumento);
+    image(imagen, 0, 0);
+    popMatrix();
+  }
 }
 
 // Efecto de fade-in

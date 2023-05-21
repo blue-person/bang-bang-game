@@ -1,38 +1,3 @@
-// Constantes
-final float MASCARA_COLISION_PROYECTIL = 15;
-final float MASCARA_COLISION_BANDERA = 20;
-final float MASCARA_COLISION_CANON = 45;
-final float RESISTENCIA_BANDERAS = 15;
-
-final int COLOR_NEGRO = #323957;
-final int COLOR_BLANCO = #F1F1F1;
-
-final String TITULO_JUEGO = "Bang! Bang!";
-final String JUGADOR_A = "jugador_a";
-final String JUGADOR_B = "jugador_b";
-
-final int DERECHA = 1;
-final int IZQUIERDA = -1;
-
-// Variables
-int tecla_presionada = 0;
-boolean permitir_espera_presentacion = true;
-boolean permitir_transicion_juego = false;
-String estado_actual_juego = "presentacion";
-String jugador_actual;
-String ganador;
-
-// Objetos
-FadeIn mostrar_logo, mostrar_inicio, ocultar_inicio;
-FadeOut ocultar_logo, iniciar_partida, acabar_partida;
-Proyectil proyectil_a, proyectil_b;
-Bandera bandera_a, bandera_b;
-Canon canon_a, canon_b;
-
-// Clases
-Audio gestor_audio = new Audio();
-Imagen gestor_imagenes = new Imagen();
-
 // Funciones
 void setup() {
   // Configuracion de la ventana
@@ -42,6 +7,7 @@ void setup() {
   // Configuracion del proyecto
   frameRate(60);
   smooth();
+  noCursor();
 
   // Pre-cargar elementos
   gestor_audio.cargar_efectos_sonido();
@@ -50,38 +16,6 @@ void setup() {
 
   // Cargar objetos
   iniciar_efectos();
-}
-
-void iniciar_efectos() {
-  // Logo
-  mostrar_logo = new FadeIn("imagen", COLOR_BLANCO, 3.5);
-  ocultar_logo = new FadeOut("imagen", COLOR_BLANCO, 4.5);
-
-  // Pantalla de inicio
-  mostrar_inicio = new FadeIn("figura", COLOR_BLANCO, 5);
-  ocultar_inicio = new FadeIn("figura", COLOR_NEGRO, 5);
-
-  // Partida
-  iniciar_partida = new FadeOut("figura", COLOR_NEGRO, 5);
-  acabar_partida = new FadeOut("figura", 0, 2.5);
-}
-
-void iniciar_entidades() {
-  // Variables
-  ganador = null;
-  jugador_actual = JUGADOR_A;
-
-  // Banderas
-  bandera_a = new Bandera(width / 4, height / 2, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_a");
-  bandera_b = new Bandera(width / 1.5, height / 2, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_b");
-
-  // Canones
-  canon_a = new Canon(width / 4, height / 2.5, MASCARA_COLISION_CANON, IZQUIERDA, "canon_a");
-  canon_b = new Canon(width / 1.5, height / 2.5, MASCARA_COLISION_CANON, DERECHA, "canon_b");
-
-  // Proyectiles
-  proyectil_a = null;
-  proyectil_b = null;
 }
 
 void draw() {
@@ -122,15 +56,21 @@ void draw() {
     break;
   case "menu":
     // Aplicar el fondo
-    background(COLOR_BLANCO);
+    background(COLOR_GRIS);
 
     // Efecto de fade-in
     mostrar_inicio.mostrar();
-    rect(0, 0, width, height);
 
     // Gestion del mensaje de inicio
-    gestor_audio.reproducir_cancion("menu_inicio");
-    mostrar_mensaje_inicio(mostrar_inicio.obtener_opacidad());
+    
+    // Mostrar el logo
+    PImage logo_juego = imagenes.get("logo_juego_0");
+    gestor_efectos.imagen_pulsante(logo_juego, width / 2, height / 4, escala_minima, escala_maxima);
+
+    // Mostrar animacion para continuar
+    fill(0, mostrar_inicio.obtener_opacidad());
+    textAlign(CENTER);
+    text("Presiona el boton para continuar", width / 2, height / 1.5);
 
     // Determinar estado
     if (mostrar_inicio.efecto_terminado() && boton_presionado()) {
@@ -155,6 +95,8 @@ void draw() {
         permitir_transicion_juego = false;
         estado_actual_juego = "juego";
       }
+    } else {
+      gestor_audio.reproducir_cancion("menu_inicio");
     }
     break;
   case "juego":
@@ -163,7 +105,7 @@ void draw() {
     float velocidad_seleccionada = obtener_valor_velocidad();
 
     // Aplicar el fondo
-    background(COLOR_BLANCO);
+    background(COLOR_GRIS);
 
     // Logica
     if (ganador != null) {
@@ -285,17 +227,21 @@ void draw() {
     }
     break;
   case "resultados":
-    // Musica de ganador
-    gestor_audio.reproducir_cancion("presentacion_resultados");
+    // Aplicar el fondo
+    background(COLOR_GRIS);
 
     // Mostrar ganador
-    mostrar_mensaje_resultados(ganador, 2);
+    fill(0, 255);
+    textAlign(CENTER);
+    text("El ganador fue: " + ganador, width / 2, height / 2);
 
     // Reiniciar
     if (boton_presionado()) {
       iniciar_efectos();
       gestor_audio.detener_cancion("presentacion_resultados");
       estado_actual_juego = "menu";
+    } else {
+      gestor_audio.reproducir_cancion("presentacion_resultados");
     }
   }
 }

@@ -4,7 +4,7 @@ class Bandera extends Entidad {
   float resistencia_total;
 
   // Animaciones
-  Animacion animacion_fuego = new Animacion("fuego", 10);
+  Animacion animacion_fuego = new Animacion("fuego", 22);
   Animacion animacion_explosion = new Animacion("explosion_intensa", 29);
   Animacion animacion_bandera;
 

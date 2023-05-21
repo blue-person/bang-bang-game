@@ -5,7 +5,7 @@ class Canon extends Entidad {
 
   // Animaciones
   Animacion animacion_base = new Animacion("base_canon", 1);
-  Animacion animacion_explosion = new Animacion("explosion_suave", 12);
+  Animacion animacion_explosion = new Animacion("explosion_suave", 16);
   Animacion animacion_canon;
 
   // Constructor
@@ -32,12 +32,13 @@ class Canon extends Entidad {
 
     // Mostrar la base
     animacion_base.mostrar(pos_x + (direccion * 8), pos_y + 12);
-
+    
+    // Cambiar los estados segun el caso
     if (estado_actual.equals("disparando")) {
-      animacion_explosion.mostrar(pos_x_punta, pos_y_punta);
+      animacion_explosion.mostrar(pos_x_punta + 5, pos_y_punta - 5);
       gestor_audio.reproducir_efecto_sonido("disparo");
     }
-
+    
     if (animacion_explosion.animacion_termino()) {
       estado_actual = "normal";
     }
@@ -50,9 +51,11 @@ class Canon extends Entidad {
     // Guardar posiciones
     ubicacion_punta.set("pos_x", pos_x_punta);
     ubicacion_punta.set("pos_y", pos_y_punta);
-
+    
+    // Cambiar el estado actual
     estado_actual = "disparando";
-
+    
+    // Retornar la ubicacion de la punta
     return ubicacion_punta;
   }
 }
