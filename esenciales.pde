@@ -39,6 +39,7 @@ Canon canon_a, canon_b;
 Audio gestor_audio = new Audio();
 Imagen gestor_imagenes = new Imagen();
 Efecto gestor_efectos = new Efecto();
+Control gestor_controles = new Control();
 
 // Funciones
 void iniciar_efectos() {

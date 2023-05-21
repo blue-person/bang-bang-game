@@ -73,7 +73,7 @@ void draw() {
     text("Presiona el boton para continuar", width / 2, height / 1.5);
 
     // Determinar estado
-    if (mostrar_inicio.efecto_terminado() && boton_presionado()) {
+    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_presionado()) {
       gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
       permitir_transicion_juego = true;
     }
@@ -101,8 +101,8 @@ void draw() {
     break;
   case "juego":
     // Variables
-    float angulo_seleccionado = obtener_valor_angulo();
-    float velocidad_seleccionada = obtener_valor_velocidad();
+    float angulo_seleccionado = gestor_controles.obtener_valor_angulo();
+    float velocidad_seleccionada = gestor_controles.obtener_valor_velocidad();
 
     // Aplicar el fondo
     background(COLOR_GRIS);
@@ -128,7 +128,7 @@ void draw() {
       if (turno_jugador_a) {
         if (existe_proyectil_a && proyectil_a.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_B;
-        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando && boton_presionado()) {
+        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
           FloatDict ubicacion_punta_canon = canon_a.obtener_ubicacion_punta();
           float pos_x = ubicacion_punta_canon.get("pos_x");
           float pos_y = ubicacion_punta_canon.get("pos_y");
@@ -138,7 +138,7 @@ void draw() {
       } else if (turno_jugador_b) {
         if (existe_proyectil_b && proyectil_b.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_A;
-        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando && boton_presionado()) {
+        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
           FloatDict ubicacion_punta_canon = canon_b.obtener_ubicacion_punta();
           float pos_x = ubicacion_punta_canon.get("pos_x");
           float pos_y = ubicacion_punta_canon.get("pos_y");
@@ -236,7 +236,7 @@ void draw() {
     text("El ganador fue: " + ganador, width / 2, height / 2);
 
     // Reiniciar
-    if (boton_presionado()) {
+    if (gestor_controles.boton_presionado()) {
       iniciar_efectos();
       gestor_audio.detener_cancion("presentacion_resultados");
       estado_actual_juego = "menu";
