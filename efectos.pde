@@ -8,26 +8,39 @@ class Efecto {
     float pulso = sin(frameCount * velocidad_pulso);
     factor_aumento = map(pulso, -1, 1, escala_minima, escala_maxima);
     float escala_vertical = (1 - factor_aumento) * 0.5 * pos_y;
-    imageMode(CENTER);
     pushMatrix();
     translate(pos_x, pos_y + escala_vertical);
     scale(factor_aumento);
     image(imagen, 0, 0);
-    popMatrix();
+    popMatrix(); 
+  }
+  
+  void fondo_degradado(int color_a, int color_b) {
+    for (int pos_y = 0; pos_y < height; pos_y++) {
+      float interseccion = map(pos_y, 0, height, 1, 0);
+      color color_degradado = lerpColor(color_a, color_b, interseccion);
+      stroke(color_degradado);
+      line(0, pos_y, width, pos_y);
+    }
+  }
+  
+  void imagen_infinita(PImage imagen, float pos_y, float velocidad) {
+    float desplazamiento = (frameCount * velocidad) % imagen.width;
+    for (float pos_x = -desplazamiento; pos_x < width; pos_x += imagen.width) {
+      image(imagen, pos_x, pos_y);
+    }
   }
 }
 
 // Efecto de fade-in
 class FadeIn {
   // Variables
-  String tipo_elemento;
   int color_transicion;
   float velocidad;
   float opacidad = 0;
 
   // Constructor
-  FadeIn(String tipo_elemento, int color_transicion, float velocidad) {
-    this.tipo_elemento = tipo_elemento;
+  FadeIn(int color_transicion, float velocidad) {
     this.color_transicion = color_transicion;
     this.velocidad = velocidad;
   }
@@ -38,16 +51,13 @@ class FadeIn {
     if (opacidad < 255) {
       opacidad += velocidad;
     }
-
-    // Determinar elemento
-    switch (tipo_elemento) {
-    case "imagen":
-      tint(color_transicion, opacidad);
-      break;
-    case "figura":
-      fill(color_transicion, opacidad);
-      break;
-    }
+    
+    // Mostrar efecto
+    push();
+    rectMode(CORNER);
+    fill(color_transicion, opacidad);
+    rect(0, 0, width, height);
+    pop();
   }
 
   boolean efecto_terminado() {
@@ -62,14 +72,12 @@ class FadeIn {
 // Efecto de fade-out
 class FadeOut {
   // Variables
-  String tipo_elemento;
   int color_transicion;
   float velocidad;
   float opacidad = 255;
 
   // Constructor
-  FadeOut(String tipo_elemento, int color_transicion, float velocidad) {
-    this.tipo_elemento = tipo_elemento;
+  FadeOut(int color_transicion, float velocidad) {
     this.color_transicion = color_transicion;
     this.velocidad = velocidad;
   }
@@ -81,15 +89,12 @@ class FadeOut {
       opacidad -= velocidad;
     }
 
-    // Determinar elemento
-    switch (tipo_elemento) {
-    case "imagen":
-      tint(color_transicion, opacidad);
-      break;
-    case "figura":
-      fill(color_transicion, opacidad);
-      break;
-    }
+    // Mostrar efecto
+    push();
+    rectMode(CORNER);
+    fill(color_transicion, opacidad);
+    rect(0, 0, width, height);
+    pop();
   }
 
   boolean efecto_terminado() {

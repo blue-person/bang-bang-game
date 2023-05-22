@@ -1,13 +1,18 @@
 // Funciones
 void setup() {
+  // Variables
+  final String TITULO_JUEGO = "Bang! Bang!";
+  final int CENTRO_HORIZONTAL = (displayWidth / 2) - (width / 2);
+  final int CENTRO_VERTICAL = (displayHeight / 2) - (height / 2);
+
   // Configuracion de la ventana
   surface.setTitle(TITULO_JUEGO);
+  surface.setLocation(CENTRO_HORIZONTAL, CENTRO_VERTICAL);
   size(640, 480);
 
   // Configuracion del proyecto
   frameRate(60);
   smooth();
-  noCursor();
 
   // Pre-cargar elementos
   gestor_audio.cargar_efectos_sonido();
@@ -22,12 +27,25 @@ void draw() {
   // Configuraciones esenciales
   noTint();
 
+  // Declaracion de imagenes
+  PImage logo_universidad = imagenes.get("logo_universidad_0");
+  PImage logo_juego = imagenes.get("logo_juego_0");
+  PImage nubes = imagenes.get("nubes_0");
+  PImage monte_a = imagenes.get("monte_a_0");
+  PImage monte_b = imagenes.get("monte_b_0");
+  PImage monte_c = imagenes.get("monte_c_0");
+
   // Determinar estado
   switch (estado_actual_juego) {
   case "presentacion":
     // Aplicar el fondo
     background(COLOR_BLANCO);
-
+    
+    // Mostrar el logo de la universidad
+    logo_universidad.resize(200, 188);
+    imageMode(CENTER);
+    image(logo_universidad, width / 2, height / 2);
+    
     // Aparecer gradualmente
     mostrar_logo.mostrar();
     if (mostrar_logo.efecto_terminado()) {
@@ -40,40 +58,44 @@ void draw() {
 
     // Desvanecer gradualmente
     if (ocultar_logo.efecto_terminado()) {
-      mostrar_logo = null;
-      ocultar_logo = null;
-
       delay(250);
       estado_actual_juego = "menu";
     }
 
-    // Mostrar el logo de la universidad
-    PImage logo_universidad = imagenes.get("logo_universidad_0");
-    logo_universidad.resize(200, 188);
-    imageMode(CENTER);
-    image(logo_universidad, width / 2, height / 2);
-
     break;
   case "menu":
-    // Aplicar el fondo
-    background(COLOR_GRIS);
+    // Mostrar el cielo
+    gestor_efectos.fondo_degradado(COLOR_AZUL_CLARO, COLOR_AZUL_OSCURO);
 
-    // Efecto de fade-in
-    mostrar_inicio.mostrar();
+    // Mostrar los fondos
+    push();
+    imageMode(CORNER);
+    tint(255, 255);
+    gestor_efectos.imagen_infinita(monte_c, height / 2.55, 0.90);
+    gestor_efectos.imagen_infinita(monte_b, height / 2.80, 0.75);
+    gestor_efectos.imagen_infinita(monte_a, height / 2, 0.60);
+    tint(255, 160);
+    gestor_efectos.imagen_infinita(nubes, 0, 1.25);
+    pop();
 
-    // Gestion del mensaje de inicio
-    
+    // Mostrar un panel semi-transparente
+    push();
+    fill(COLOR_NEGRO, 135);
+    rect(0, 0, width, height);
+    pop();
+
     // Mostrar el logo
-    PImage logo_juego = imagenes.get("logo_juego_0");
+    push();
+    imageMode(CENTER);
     gestor_efectos.imagen_pulsante(logo_juego, width / 2, height / 4, escala_minima, escala_maxima);
+    pop();
 
     // Mostrar animacion para continuar
-    fill(0, mostrar_inicio.obtener_opacidad());
     textAlign(CENTER);
     text("Presiona el boton para continuar", width / 2, height / 1.5);
 
     // Determinar estado
-    if (mostrar_inicio.efecto_terminado() && boton_presionado()) {
+    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_presionado()) {
       gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
       permitir_transicion_juego = true;
     }
@@ -85,9 +107,6 @@ void draw() {
 
       // Efecto de fade-in
       ocultar_inicio.mostrar();
-      rect(0, 0, width, height);
-
-      // Cambiar de estado
       if (ocultar_inicio.efecto_terminado()) {
         delay(100);
 
@@ -98,150 +117,180 @@ void draw() {
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
     }
+
+    // Efecto de fade-out al iniciar el estado
+    mostrar_inicio.mostrar();
+
     break;
   case "juego":
     // Variables
-    float angulo_seleccionado = obtener_valor_angulo();
-    float velocidad_seleccionada = obtener_valor_velocidad();
+    float angulo_seleccionado = gestor_controles.obtener_valor_angulo();
+    float velocidad_seleccionada = gestor_controles.obtener_valor_velocidad();
 
-    // Aplicar el fondo
-    background(COLOR_GRIS);
-
-    // Logica
-    if (ganador != null) {
-      gestor_audio.detener_cancion("batalla_intensa");
-
-      acabar_partida.mostrar();
-      rect(0, 0, width, height);
-
-      if (acabar_partida.efecto_terminado()) {
-        estado_actual_juego = "resultados";
+    // Mostrar el cielo
+    gestor_efectos.fondo_degradado(COLOR_AZUL_CLARO, COLOR_AZUL_OSCURO);
+    
+    // Mostrar las nubes
+    push();
+    imageMode(CORNER);
+    tint(255, 255);
+    image(monte_c, 0, height / 2.55);
+    image(monte_b, 0, height / 2.80);
+    image(monte_a, 0, height / 2);
+    tint(255, 160);
+    gestor_efectos.imagen_infinita(nubes, 0, 1.25);
+    pop();
+    
+    // Bandera A
+    if (bandera_a != null) {
+      String estado_bandera = bandera_a.obtener_estado();
+      if (estado_bandera.equals("destruido")) {
+        bandera_a = null;
+      } else {
+        bandera_a.actualizar_estado();
       }
     } else {
+      ganador = JUGADOR_A;
+    }
+
+    // Bandera B
+    if (bandera_b != null) {
+      String estado_bandera = bandera_b.obtener_estado();
+      if (estado_bandera.equals("destruido")) {
+        bandera_b = null;
+      } else {
+        bandera_b.actualizar_estado();
+      }
+    } else {
+      ganador = JUGADOR_B;
+    }
+
+    // Proyectil A
+    if (proyectil_a != null) {
+      String estado_proyectil = proyectil_a.obtener_estado();
+      if (estado_proyectil.equals("destruido")) {
+        proyectil_a = null;
+      } else {
+        if (bandera_b != null) {
+          proyectil_a.determinar_impacto(bandera_b);
+        }
+        proyectil_a.actualizar_estado();
+      }
+    }
+
+    // Proyectil B
+    if (proyectil_b != null) {
+      String estado_proyectil = proyectil_b.obtener_estado();
+      if (estado_proyectil.equals("destruido")) {
+        proyectil_b = null;
+      } else {
+        if (bandera_a != null) {
+          proyectil_b.determinar_impacto(bandera_a);
+        }
+        proyectil_b.actualizar_estado();
+      }
+    }
+    
+    // Se actualiza el estado de los canones
+    canon_a.mostrar(angulo_seleccionado);
+    canon_b.mostrar(angulo_seleccionado);
+    
+    // Manejo de la musica mientras las banderas existan
+    if (bandera_a != null && bandera_b != null) {
+      boolean batalla_normal = bandera_a.obtener_intensidad_batalla() == "normal" || bandera_b.obtener_intensidad_batalla() == "normal";
+      boolean batalla_acelerada = bandera_a.obtener_intensidad_batalla() == "inestable" || bandera_b.obtener_intensidad_batalla() == "inestable";
+      boolean batalla_intensa = bandera_a.obtener_intensidad_batalla() == "critico" || bandera_b.obtener_intensidad_batalla() == "critico";
+
+      if (batalla_normal) {
+        gestor_audio.reproducion_solitaria_cancion("batalla_normal");
+      } else if (batalla_acelerada) {
+        gestor_audio.reproducion_solitaria_cancion("batalla_acelerada");
+      } else if (batalla_intensa) {
+        gestor_audio.reproducion_solitaria_cancion("batalla_intensa");
+      }
+    }
+    
+    // Logica mientras no haya jugador
+    if (ganador == null) {
       boolean turno_jugador_a = jugador_actual.equals(JUGADOR_A);
       boolean turno_jugador_b = jugador_actual.equals(JUGADOR_B);
       boolean existe_proyectil_a = (proyectil_a != null);
       boolean existe_proyectil_b = (proyectil_b != null);
       boolean bandera_a_no_explotando = (bandera_a != null) && !bandera_a.obtener_estado().equals("explotando");
       boolean bandera_b_no_explotando = (bandera_b != null) && !bandera_b.obtener_estado().equals("explotando");
-
+    
       if (turno_jugador_a) {
         if (existe_proyectil_a && proyectil_a.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_B;
-        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando && boton_presionado()) {
+        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
           FloatDict ubicacion_punta_canon = canon_a.obtener_ubicacion_punta();
           float pos_x = ubicacion_punta_canon.get("pos_x");
           float pos_y = ubicacion_punta_canon.get("pos_y");
-
+    
           proyectil_a = new Proyectil(pos_x, pos_y, DERECHA, angulo_seleccionado, velocidad_seleccionada, MASCARA_COLISION_PROYECTIL);
         }
       } else if (turno_jugador_b) {
         if (existe_proyectil_b && proyectil_b.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_A;
-        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando && boton_presionado()) {
+        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
           FloatDict ubicacion_punta_canon = canon_b.obtener_ubicacion_punta();
           float pos_x = ubicacion_punta_canon.get("pos_x");
           float pos_y = ubicacion_punta_canon.get("pos_y");
-
+    
           proyectil_b = new Proyectil(pos_x, pos_y, IZQUIERDA, angulo_seleccionado, velocidad_seleccionada, MASCARA_COLISION_PROYECTIL);
         }
       }
-
-      // Bandera A
-      if (bandera_a != null) {
-        String estado_bandera = bandera_a.obtener_estado();
-        if (estado_bandera.equals("destruido")) {
-          bandera_a = null;
-        } else {
-          bandera_a.actualizar_estado();
-        }
-      } else {
-        ganador = JUGADOR_A;
+    } else {
+      // Detener la musica
+      gestor_audio.detener_cancion("batalla_intensa");
+      
+      // Mostrar el efecto fade-out
+      acabar_partida.mostrar();
+      if (acabar_partida.efecto_terminado()) {
+        estado_actual_juego = "resultados";
       }
-
-      // Bandera B
-      if (bandera_b != null) {
-        String estado_bandera = bandera_b.obtener_estado();
-        if (estado_bandera.equals("destruido")) {
-          bandera_b = null;
-        } else {
-          bandera_b.actualizar_estado();
-        }
-      } else {
-        ganador = JUGADOR_B;
-      }
-
-      // Proyectil A
-      if (proyectil_a != null) {
-        String estado_proyectil = proyectil_a.obtener_estado();
-        if (estado_proyectil.equals("destruido")) {
-          proyectil_a = null;
-        } else {
-          if (bandera_b != null) {
-            proyectil_a.determinar_impacto(bandera_b);
-          }
-          proyectil_a.actualizar_estado();
-        }
-      }
-
-      // Proyectil B
-      if (proyectil_b != null) {
-        String estado_proyectil = proyectil_b.obtener_estado();
-        if (estado_proyectil.equals("destruido")) {
-          proyectil_b = null;
-        } else {
-          if (bandera_a != null) {
-            proyectil_b.determinar_impacto(bandera_a);
-          }
-          proyectil_b.actualizar_estado();
-        }
-      }
-
-      // Manejo de la musica
-      if (bandera_a != null && bandera_b != null) {
-        boolean batalla_normal = bandera_a.obtener_intensidad_batalla() == "normal" || bandera_b.obtener_intensidad_batalla() == "normal";
-        boolean batalla_acelerada = bandera_a.obtener_intensidad_batalla() == "inestable" || bandera_b.obtener_intensidad_batalla() == "inestable";
-        boolean batalla_intensa = bandera_a.obtener_intensidad_batalla() == "critico" || bandera_b.obtener_intensidad_batalla() == "critico";
-
-        if (batalla_normal) {
-          gestor_audio.detener_cancion("batalla_intensa");
-          gestor_audio.detener_cancion("batalla_acelerada");
-          gestor_audio.reproducir_cancion("batalla_normal");
-        } else if (batalla_acelerada) {
-          gestor_audio.detener_cancion("batalla_normal");
-          gestor_audio.detener_cancion("batalla_intensa");
-          gestor_audio.reproducir_cancion("batalla_acelerada");
-        } else if (batalla_intensa) {
-          gestor_audio.detener_cancion("batalla_normal");
-          gestor_audio.detener_cancion("batalla_acelerada");
-          gestor_audio.reproducir_cancion("batalla_intensa");
-        }
-      }
-
-      // Se actualiza el estado de los canones
-      canon_a.mostrar(angulo_seleccionado);
-      canon_b.mostrar(angulo_seleccionado);
-
-      iniciar_partida.mostrar();
-      rect(0, 0, width, height);
     }
+
+    // Mostrar el efecto fade-out
+    iniciar_partida.mostrar();
+
     break;
   case "resultados":
     // Aplicar el fondo
-    background(COLOR_GRIS);
+    background(COLOR_AZUL_CLARO);
 
     // Mostrar ganador
+    push();
     fill(0, 255);
     textAlign(CENTER);
+    pop();
     text("El ganador fue: " + ganador, width / 2, height / 2);
+    
+    // Determinar estado
+    if (mostrar_resultados.efecto_terminado() && gestor_controles.boton_presionado()) {
+      gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
+      permitir_transicion_juego = true;
+    }
 
-    // Reiniciar
-    if (boton_presionado()) {
-      iniciar_efectos();
+    // Realizar transicion
+    if (permitir_transicion_juego) {
+      // Determinar estado de los audios
       gestor_audio.detener_cancion("presentacion_resultados");
-      estado_actual_juego = "menu";
+
+      // Efecto de fade-in
+      ocultar_resultados.mostrar();
+      if (ocultar_resultados.efecto_terminado()) {
+        delay(100);
+
+        iniciar_efectos();
+        permitir_transicion_juego = false;
+        estado_actual_juego = "menu";
+      }
     } else {
       gestor_audio.reproducir_cancion("presentacion_resultados");
     }
+    
+    // Efecto de fade-out al iniciar el estado
+    mostrar_resultados.mostrar();
   }
 }

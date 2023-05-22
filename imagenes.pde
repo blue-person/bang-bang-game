@@ -1,6 +1,7 @@
 // Variables globales
 HashMap < String, PImage > imagenes = new HashMap < String, PImage > ();
 
+// Clase
 class Imagen {
   // Constructor
   Imagen() {}

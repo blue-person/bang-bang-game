@@ -18,13 +18,21 @@ class Animacion {
   // Metodos
   void mostrar(float pos_x, float pos_y) {
     indice_actual = (indice_actual + 1) % cantidad_imagenes;
+    
+    push();
     imageMode(CENTER);
+    pop();
+    
     image(lista_imagenes[indice_actual], pos_x, pos_y);
   }
 
   void mostrar(float pos_x, float pos_y, int direccion) {
     indice_actual = (indice_actual + 1) % cantidad_imagenes;
+    
+    push();
     imageMode(CENTER);
+    pop();
+    
     pushMatrix();
     scale(direccion, 1);
     image(lista_imagenes[indice_actual], direccion * pos_x, pos_y);

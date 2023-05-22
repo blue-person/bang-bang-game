@@ -1,6 +1,5 @@
 // Librerias
 import ddf.minim.*;
-import java.util.Map;
 
 // Clases globales
 Minim minim = new Minim(this);
@@ -55,7 +54,26 @@ class Audio {
       archivo_audio.pause();
     }
   }
+  
+  void reproducion_solitaria_cancion(String nombre_elemento) {
+    AudioPlayer archivo_audio = canciones.get(nombre_elemento);
+    
+    for (String nombre_cancion : canciones.keySet()) {
+      AudioPlayer cancion_actual = canciones.get(nombre_cancion);
+      
+      boolean cancion_distinta = cancion_actual != archivo_audio;
+      boolean cancion_reproduciendose = cancion_actual.isPlaying();
+      if (cancion_distinta && cancion_reproduciendose) {
+        cancion_actual.pause();
+      }
+    }
 
+    if (!archivo_audio.isPlaying()) {
+      archivo_audio.rewind();
+      archivo_audio.loop();
+    }
+  }
+  
   void reproducir_cancion(String nombre_elemento) {
     AudioPlayer archivo_audio = canciones.get(nombre_elemento);
 
