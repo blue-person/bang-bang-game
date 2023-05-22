@@ -18,7 +18,9 @@ Es importante tener en cuenta que, para jugar, se requiere una Arduino para la l
 ## Autores
 
  👤**Alejandro Buelvas Garcia**
+ 
  👤**Julian Cuellar Pascuas**
+ 
  👤**Pedro Luis Ramos Tirado**
 
 ## Licencia
