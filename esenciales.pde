@@ -5,10 +5,10 @@ final float MASCARA_COLISION_CANON = 45;
 final float RESISTENCIA_BANDERAS = 15;
 
 final int COLOR_NEGRO = #323957;
-final int COLOR_GRIS = #7A9BA4;
 final int COLOR_BLANCO = #F1F1F1;
+final int COLOR_AZUL_CLARO = #6fd3ff;
+final int COLOR_AZUL_OSCURO = #5185d3;
 
-final String TITULO_JUEGO = "Bang! Bang!";
 final String JUGADOR_A = "jugador_a";
 final String JUGADOR_B = "jugador_b";
 
@@ -29,8 +29,8 @@ float escala_maxima = 0.50;
 float escala_minima = 0.45;
 
 // Objetos
-FadeIn mostrar_logo, mostrar_inicio, ocultar_inicio;
-FadeOut ocultar_logo, iniciar_partida, acabar_partida;
+FadeOut mostrar_logo, mostrar_inicio, iniciar_partida, mostrar_resultados;
+FadeIn ocultar_logo, ocultar_inicio, acabar_partida, ocultar_resultados;
 Proyectil proyectil_a, proyectil_b;
 Bandera bandera_a, bandera_b;
 Canon canon_a, canon_b;
@@ -44,16 +44,20 @@ Control gestor_controles = new Control();
 // Funciones
 void iniciar_efectos() {
   // Logo
-  mostrar_logo = new FadeIn("imagen", COLOR_BLANCO, 3.5);
-  ocultar_logo = new FadeOut("imagen", COLOR_BLANCO, 4.5);
+  mostrar_logo = new FadeOut(COLOR_BLANCO, 3.5);
+  ocultar_logo = new FadeIn(COLOR_BLANCO, 4.5);
 
   // Pantalla de inicio
-  mostrar_inicio = new FadeIn("imagen", COLOR_BLANCO, 5);
-  ocultar_inicio = new FadeIn("figura", COLOR_NEGRO, 5);
+  mostrar_inicio = new FadeOut(COLOR_BLANCO, 5);
+  ocultar_inicio = new FadeIn(COLOR_NEGRO, 5);
 
   // Partida
-  iniciar_partida = new FadeOut("figura", COLOR_NEGRO, 5);
-  acabar_partida = new FadeOut("figura", 0, 2.5);
+  iniciar_partida = new FadeOut(COLOR_NEGRO, 5);
+  acabar_partida = new FadeIn(COLOR_NEGRO, 2.5);
+  
+  // Resultados
+  mostrar_resultados = new FadeOut(COLOR_NEGRO, 5);
+  ocultar_resultados = new FadeIn(COLOR_BLANCO, 8.5);
 }
 
 void iniciar_entidades() {
