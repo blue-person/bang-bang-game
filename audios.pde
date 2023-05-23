@@ -90,4 +90,14 @@ class Audio {
       archivo_audio.pause();
     }
   }
+  
+  void detener_canciones() {
+    for (String nombre_cancion : canciones.keySet()) {
+      AudioPlayer cancion_actual = canciones.get(nombre_cancion);
+      boolean cancion_reproduciendose = cancion_actual.isPlaying();
+      if (cancion_reproduciendose) {
+        cancion_actual.pause();
+      }
+    }
+  }
 }

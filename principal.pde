@@ -242,7 +242,7 @@ void draw() {
       }
     } else {
       // Detener la musica
-      gestor_audio.detener_cancion("batalla_intensa");
+      gestor_audio.detener_canciones();
       
       // Mostrar el efecto fade-out
       acabar_partida.mostrar();
