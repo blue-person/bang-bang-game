@@ -1,6 +1,6 @@
 // Funciones
 void setup() {
-  // Variables
+  // Constantes
   final String TITULO_JUEGO = "Bang! Bang!";
   final int CENTRO_HORIZONTAL = (displayWidth / 2) - (width / 2);
   final int CENTRO_VERTICAL = (displayHeight / 2) - (height / 2);
@@ -8,7 +8,7 @@ void setup() {
   // Configuracion de la ventana
   surface.setTitle(TITULO_JUEGO);
   surface.setLocation(CENTRO_HORIZONTAL, CENTRO_VERTICAL);
-  size(640, 480);
+  size(1280, 720);
 
   // Configuracion del proyecto
   frameRate(60);
@@ -42,9 +42,11 @@ void draw() {
     background(COLOR_BLANCO);
     
     // Mostrar el logo de la universidad
-    logo_universidad.resize(200, 188);
+    push();
     imageMode(CENTER);
+    logo_universidad.resize(250, 0);
     image(logo_universidad, width / 2, height / 2);
+    pop();
     
     // Aparecer gradualmente
     mostrar_logo.mostrar();
@@ -71,11 +73,12 @@ void draw() {
     push();
     imageMode(CORNER);
     tint(255, 255);
-    gestor_efectos.imagen_infinita(monte_c, height / 2.55, 0.90);
-    gestor_efectos.imagen_infinita(monte_b, height / 2.80, 0.75);
-    gestor_efectos.imagen_infinita(monte_a, height / 2, 0.60);
-    tint(255, 160);
-    gestor_efectos.imagen_infinita(nubes, 0, 1.25);
+    gestor_efectos.imagen_infinita(monte_c, height / 1.65, 0.90);
+    gestor_efectos.imagen_infinita(monte_b, height / 1.75, 0.75);
+    gestor_efectos.imagen_infinita(monte_a, height / 1.50, 0.60);
+    tint(255, 135);
+    gestor_efectos.imagen_infinita(nubes, 35, 1.25);
+    gestor_efectos.imagen_infinita(nubes, 195, 1.50);
     pop();
 
     // Mostrar un panel semi-transparente
@@ -130,15 +133,16 @@ void draw() {
     // Mostrar el cielo
     gestor_efectos.fondo_degradado(COLOR_AZUL_CLARO, COLOR_AZUL_OSCURO);
     
-    // Mostrar las nubes
+    // Mostrar los fondos
     push();
     imageMode(CORNER);
     tint(255, 255);
-    image(monte_c, 0, height / 2.55);
-    image(monte_b, 0, height / 2.80);
-    image(monte_a, 0, height / 2);
-    tint(255, 160);
-    gestor_efectos.imagen_infinita(nubes, 0, 1.25);
+    gestor_efectos.imagen_infinita(monte_c, height / 1.65, 0);
+    gestor_efectos.imagen_infinita(monte_b, height / 1.75, 0);
+    gestor_efectos.imagen_infinita(monte_a, height / 1.50, 0);
+    tint(255, 135);
+    gestor_efectos.imagen_infinita(nubes, 35, 1.25);
+    gestor_efectos.imagen_infinita(nubes, 195, 1.50);
     pop();
     
     // Bandera A
