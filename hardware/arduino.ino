@@ -1,21 +1,19 @@
+#include <Servo.h>
+
 int canon1 = 5;
 int canon2 = 6;
 int botonF = 2;
-int potent_1 = 0;
-int potent_2 = 1;
 int max = 1023;
 int min = 21;
-
-int V_1 = 0;
-int A_1 = 0;
+int VPV_1 = 0;
+int VPA_1 = 0;
 int angulo = 0;
 int velocidad = 0;
 int turno = 0;
+int micro = 13;
 int angulo_f1 = 0;
 int angulo_f2 = 0;
-String datos;
-
-#include<Servo.h>
+int boton_presionado = 0;
 
 Servo motor1;
 Servo motor2;
@@ -33,19 +31,17 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(13, LOW);
-  V_1 = analogRead(potent_1);
-  A_1 = analogRead(potent_2);
-  velocidad = map(V_1, min, max, 0, 999);
-  angulo = map(A_1, min, max, -45, 50);
-  angulo_f1 = map(A_1, min, max, 0, 90);
-  angulo_f2 = map(A_1, min, max, 180, 90);
+  delay(250);
+
+  VPV_1 = analogRead(0);
+  VPA_1 = analogRead(1);
+  velocidad = map(VPV_1, min, max, 0, 150);
+  angulo = map(VPA_1, min, max, -45, 50);
+  angulo_f1 = map(VPA_1, min, max, 0, 90);
+  angulo_f2 = map(VPA_1, min, max, 180, 90);
+
   if (digitalRead(botonF) == HIGH) {
-    digitalWrite(13, HIGH);
-    Serial.print(angulo);
-    Serial.print(",");
-    Serial.println(velocidad);
-    delay(500);
+    boton_presionado = 1;
     if (turno % 2 == 0) {
       motor1.write(angulo_f1);
       turno++;
@@ -53,9 +49,13 @@ void loop() {
       motor2.write(angulo_f2);
       turno++;
     }
-
+  } else {
+    boton_presionado = 0;
   }
 
-}
-
+  Serial.print(boton_presionado);
+  Serial.print(",");
+  Serial.print(angulo);
+  Serial.print(",");
+  Serial.println(velocidad);
 }
