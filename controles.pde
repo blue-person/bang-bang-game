@@ -12,7 +12,7 @@ class Control {
   
   boolean boton_presionado() {
     String[] valores_puerto_serial = texto_puerto_serial.split(",");
-    boolean boton_presionado = boolean(valores_puerto_serial[0]);
+    boolean boton_presionado = int(valores_puerto_serial[0]) == 1;
     return boton_presionado;
   }
 

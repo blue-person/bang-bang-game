@@ -25,8 +25,8 @@ class Efecto {
   }
   
   void imagen_infinita(PImage imagen, float pos_y, float velocidad) {
-    float desplazamiento = (frameCount * velocidad) % imagen.width;
-    for (float pos_x = -desplazamiento; pos_x < width; pos_x += imagen.width) {
+    int desplazamiento = int(frameCount * velocidad) % imagen.width;
+    for (int pos_x = -desplazamiento; pos_x < width; pos_x += imagen.width) {
       image(imagen, pos_x, pos_y);
     }
   }

@@ -15,25 +15,21 @@ void setup() {
 
   // Configuracion del proyecto
   frameRate(60);
-  smooth();
 
   // Pre-cargar elementos
   gestor_audio.cargar_efectos_sonido();
   gestor_audio.cargar_canciones();
   gestor_imagenes.cargar_imagenes();
   
-  // Puerto serial
-  puerto_serial = new Serial(this, Serial.list()[0], 9600);  
-  puerto_serial.bufferUntil('\n');
-  
   // Cargar elementos
   inicializar_efectos();
+  inicializar_conexion_serial();
 }
 
 void draw() {
   // Configuraciones esenciales
   noTint();
-
+  
   // Declaracion de imagenes
   PImage logo_universidad = imagenes.get("logo_universidad_0");
   PImage logo_juego = imagenes.get("logo_juego_0");
@@ -97,6 +93,7 @@ void draw() {
     // Mostrar el logo
     push();
     imageMode(CENTER);
+    logo_juego.resize(700, 0);
     gestor_efectos.imagen_pulsante(logo_juego, width / 2, height / 4, escala_minima, escala_maxima);
     pop();
 

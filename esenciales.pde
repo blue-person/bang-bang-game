@@ -9,8 +9,8 @@ final int COLOR_BLANCO = #F1F1F1;
 final int COLOR_AZUL_CLARO = #6fd3ff;
 final int COLOR_AZUL_OSCURO = #5185d3;
 
-final String JUGADOR_A = "jugador_a";
-final String JUGADOR_B = "jugador_b";
+final String JUGADOR_A = "jugador_rojo";
+final String JUGADOR_B = "jugador_azul";
 
 final int DERECHA = 1;
 final int IZQUIERDA = -1;
@@ -71,7 +71,7 @@ void inicializar_elementos() {
   // Variables generales
   ganador = null;
   jugador_actual = JUGADOR_A;
-  
+
   // Angulo
   angulo_a = -45;
   angulo_b = -45;
@@ -91,6 +91,17 @@ void inicializar_elementos() {
   // Proyectiles
   proyectil_a = null;
   proyectil_b = null;
+}
+
+void inicializar_conexion_serial() {  
+  try {
+    puerto_serial = new Serial(this, Serial.list()[0], 9600);  
+    puerto_serial.bufferUntil('\n');
+  } catch (ArrayIndexOutOfBoundsException error) {
+    println("No se ha encontrado ninguna conexion serial activa.");
+  } catch (Exception error) {
+    println("Se ha encontrado un error en la conexion con el puerto serial: " + error);
+  }
 }
 
 void serialEvent(Serial puerto_serial) {
