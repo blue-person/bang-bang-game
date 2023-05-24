@@ -54,8 +54,8 @@ class Proyectil extends Entidad {
     pos_y = pos_y_inicial + pos_y_posterior;
     
     // Determinar si esta fuera de los limites
-    boolean proyectil_fuera_limite_horizontal = (pos_x < 0) || (pos_x > width);
-    boolean proyectil_fuera_limite_vertical = (pos_y < 0) || (pos_y > height);
+    boolean proyectil_fuera_limite_horizontal = (pos_x < -50) || (pos_x > width + 50);
+    boolean proyectil_fuera_limite_vertical = (pos_y < -50) || (pos_y > height);
     
     // Reajustar el estado
     if (proyectil_fuera_limite_horizontal || proyectil_fuera_limite_vertical) {

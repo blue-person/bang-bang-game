@@ -20,8 +20,14 @@ int tecla_presionada = 0;
 boolean permitir_espera_presentacion = true;
 boolean permitir_transicion_juego = false;
 String estado_actual_juego = "presentacion";
-String jugador_actual;
+
 String ganador;
+String jugador_actual;
+
+float angulo_a;
+float angulo_b;
+float velocidad_a;
+float velocidad_b;
 
 float factor_aumento = 1.0;
 float velocidad_pulso = 0.08;
@@ -34,6 +40,7 @@ FadeIn ocultar_logo, ocultar_inicio, acabar_partida, ocultar_resultados;
 Proyectil proyectil_a, proyectil_b;
 Bandera bandera_a, bandera_b;
 Canon canon_a, canon_b;
+Serial puerto_serial;
 
 // Clases
 Audio gestor_audio = new Audio();
@@ -42,7 +49,7 @@ Efecto gestor_efectos = new Efecto();
 Control gestor_controles = new Control();
 
 // Funciones
-void iniciar_efectos() {
+void inicializar_efectos() {
   // Logo
   mostrar_logo = new FadeOut(COLOR_BLANCO, 3.5);
   ocultar_logo = new FadeIn(COLOR_BLANCO, 4.5);
@@ -60,10 +67,18 @@ void iniciar_efectos() {
   ocultar_resultados = new FadeIn(COLOR_BLANCO, 8.5);
 }
 
-void iniciar_entidades() {
-  // Variables
+void inicializar_elementos() {
+  // Variables generales
   ganador = null;
   jugador_actual = JUGADOR_A;
+  
+  // Angulo
+  angulo_a = -45;
+  angulo_b = -45;
+  
+  // Velocidad
+  velocidad_a = 0;
+  velocidad_b = 0;
 
   // Banderas
   bandera_a = new Bandera(width / 4, height / 2, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_a");
@@ -76,4 +91,10 @@ void iniciar_entidades() {
   // Proyectiles
   proyectil_a = null;
   proyectil_b = null;
+}
+
+void serialEvent(Serial puerto_serial) {
+  String texto_serial = puerto_serial.readStringUntil('\n');
+  gestor_controles.establecer_texto_serial(texto_serial);
+  puerto_serial.clear();
 }

@@ -1,3 +1,6 @@
+// Librerias
+import processing.serial.*;
+
 // Funciones
 void setup() {
   // Constantes
@@ -18,9 +21,13 @@ void setup() {
   gestor_audio.cargar_efectos_sonido();
   gestor_audio.cargar_canciones();
   gestor_imagenes.cargar_imagenes();
-
-  // Cargar objetos
-  iniciar_efectos();
+  
+  // Puerto serial
+  puerto_serial = new Serial(this, Serial.list()[0], 9600);  
+  puerto_serial.bufferUntil('\n');
+  
+  // Cargar elementos
+  inicializar_efectos();
 }
 
 void draw() {
@@ -113,7 +120,7 @@ void draw() {
       if (ocultar_inicio.efecto_terminado()) {
         delay(100);
 
-        iniciar_entidades();
+        inicializar_elementos();
         permitir_transicion_juego = false;
         estado_actual_juego = "juego";
       }
@@ -126,10 +133,6 @@ void draw() {
 
     break;
   case "juego":
-    // Variables
-    float angulo_seleccionado = gestor_controles.obtener_valor_angulo();
-    float velocidad_seleccionada = gestor_controles.obtener_valor_velocidad();
-
     // Mostrar el cielo
     gestor_efectos.fondo_degradado(COLOR_AZUL_CLARO, COLOR_AZUL_OSCURO);
     
@@ -196,8 +199,8 @@ void draw() {
     }
     
     // Se actualiza el estado de los canones
-    canon_a.mostrar(angulo_seleccionado);
-    canon_b.mostrar(angulo_seleccionado);
+    canon_a.mostrar(angulo_a);
+    canon_b.mostrar(angulo_b);
     
     // Manejo de la musica mientras las banderas existan
     if (bandera_a != null && bandera_b != null) {
@@ -226,22 +229,32 @@ void draw() {
       if (turno_jugador_a) {
         if (existe_proyectil_a && proyectil_a.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_B;
-        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
-          FloatDict ubicacion_punta_canon = canon_a.obtener_ubicacion_punta();
-          float pos_x = ubicacion_punta_canon.get("pos_x");
-          float pos_y = ubicacion_punta_canon.get("pos_y");
-    
-          proyectil_a = new Proyectil(pos_x, pos_y, DERECHA, angulo_seleccionado, velocidad_seleccionada, MASCARA_COLISION_PROYECTIL);
+        } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando) {
+          if (gestor_controles.boton_presionado()) {
+            FloatDict ubicacion_punta_canon = canon_a.obtener_ubicacion_punta();
+            float pos_x = ubicacion_punta_canon.get("pos_x");
+            float pos_y = ubicacion_punta_canon.get("pos_y");
+      
+            proyectil_a = new Proyectil(pos_x, pos_y, DERECHA, angulo_a, velocidad_a, MASCARA_COLISION_PROYECTIL);
+          } else {
+            angulo_a = gestor_controles.obtener_valor_angulo();
+            velocidad_a = gestor_controles.obtener_valor_velocidad();
+          }
         }
       } else if (turno_jugador_b) {
         if (existe_proyectil_b && proyectil_b.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_A;
-        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando && gestor_controles.boton_presionado()) {
-          FloatDict ubicacion_punta_canon = canon_b.obtener_ubicacion_punta();
-          float pos_x = ubicacion_punta_canon.get("pos_x");
-          float pos_y = ubicacion_punta_canon.get("pos_y");
-    
-          proyectil_b = new Proyectil(pos_x, pos_y, IZQUIERDA, angulo_seleccionado, velocidad_seleccionada, MASCARA_COLISION_PROYECTIL);
+        } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando) {
+          if (gestor_controles.boton_presionado()) {
+            FloatDict ubicacion_punta_canon = canon_b.obtener_ubicacion_punta();
+            float pos_x = ubicacion_punta_canon.get("pos_x");
+            float pos_y = ubicacion_punta_canon.get("pos_y");
+            
+            proyectil_b = new Proyectil(pos_x, pos_y, IZQUIERDA, angulo_b, velocidad_b, MASCARA_COLISION_PROYECTIL);
+          } else {
+            angulo_b = gestor_controles.obtener_valor_angulo();
+            velocidad_b = gestor_controles.obtener_valor_velocidad();
+          }
         }
       }
     } else {
@@ -286,7 +299,7 @@ void draw() {
       if (ocultar_resultados.efecto_terminado()) {
         delay(100);
 
-        iniciar_efectos();
+        inicializar_efectos();
         permitir_transicion_juego = false;
         estado_actual_juego = "menu";
       }
