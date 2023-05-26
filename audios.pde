@@ -45,7 +45,12 @@ class Audio {
     canciones.put("batalla_intensa", minim.loadFile("media/audio/canciones/batalla_intensa.wav", BUFFER_CANCIONES));
     canciones.put("presentacion_resultados", minim.loadFile("media/audio/canciones/presentacion_resultados.wav", BUFFER_CANCIONES));
   }
-
+  
+  boolean verificar_reproduccion_efecto(String nombre_elemento) {
+    AudioPlayer archivo_audio = obtener_efecto(nombre_elemento);
+    return archivo_audio.isPlaying();
+  }
+  
   void reproducir_efecto_sonido(String nombre_elemento) {
     AudioPlayer archivo_audio = obtener_efecto(nombre_elemento);
 

@@ -55,7 +55,7 @@ class Proyectil extends Entidad {
     
     // Determinar si esta fuera de los limites
     boolean proyectil_fuera_limite_horizontal = (pos_x < -50) || (pos_x > width + 50);
-    boolean proyectil_fuera_limite_vertical = (pos_y < -50) || (pos_y > height);
+    boolean proyectil_fuera_limite_vertical = (pos_y < -200) || (pos_y > height + 10);
     boolean proyectil_impacto_pared_derecha = verificar_colision_con_muralla(0, 230, 354, height);
     boolean proyectil_impacto_pared_izquierda = verificar_colision_con_muralla(860, 368, height, height);
     
@@ -93,7 +93,7 @@ class Proyectil extends Entidad {
     }
   }
 
-  void determinar_impacto(Bandera bandera) {
+  float determinar_impacto(Bandera bandera) {
     // Variables
     String estado_actual = obtener_estado();
     boolean proyectil_moviendose = estado_actual.equals("moviendose");
@@ -102,11 +102,14 @@ class Proyectil extends Entidad {
     if (proyectil_moviendose && proyectil_colisiono) {
       // Gestionar el impacto a la bandera
       float fuerza_impacto = determinar_fuerza_impacto();
-      bandera.reducir_resistencia(fuerza_impacto);
 
       // Destruir el proyectil
       destruir();
+      
+      // Devolver valor
+      return fuerza_impacto;
     }
+    return 0;
   }
 
   String obtener_estado() {

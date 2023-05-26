@@ -38,6 +38,7 @@ class Imagen {
     cargar_tileset("muralla_izquierda", 11);
     cargar_tileset("vegetacion", 4);
     cargar_tileset("presiona_boton", 1);
+    cargar_tileset("anunciador", 5);
     cargar_tileset("ganador", 3);
   }
 

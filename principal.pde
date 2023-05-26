@@ -24,26 +24,15 @@ void setup() {
   
   // Cargar elementos
   inicializar_efectos();
+  inicializar_decorativos();
   inicializar_conexion_serial();
+  inicializar_efectos_imagen();
 }
 
 void draw() {
   // Configuraciones esenciales
   noTint();
   
-  // Declaracion de imagenes
-  PImage logo_universidad = gestor_imagenes.obtener_imagen("logo_universidad");
-  PImage logo_juego = gestor_imagenes.obtener_imagen("logo_juego");
-  PImage presiona_boton = gestor_imagenes.obtener_sprite("presiona_boton_0");
-  PImage mensaje_ganador = gestor_imagenes.obtener_sprite("ganador_2");
-  PImage nombre_jugador_azul = gestor_imagenes.obtener_sprite("ganador_0");
-  PImage nombre_jugador_rojo = gestor_imagenes.obtener_sprite("ganador_1");
-  PImage nubes = gestor_imagenes.obtener_imagen("nubes");
-  PImage monte_a = gestor_imagenes.obtener_imagen("monte_a");
-  PImage monte_b = gestor_imagenes.obtener_imagen("monte_b");
-  PImage monte_c = gestor_imagenes.obtener_imagen("monte_c");
-  PImage fondo_cuadros = gestor_imagenes.obtener_imagen("fondo_cuadros");
-
   // Determinar estado
   switch (estado_actual_juego) {
   case "presentacion":
@@ -123,7 +112,7 @@ void draw() {
 
         inicializar_elementos();
         permitir_transicion_juego = false;
-        estado_actual_juego = "resultados";
+        estado_actual_juego = "juego";
       }
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
@@ -248,7 +237,10 @@ void draw() {
         proyectil_a = null;
       } else {
         if (bandera_b != null) {
-          proyectil_a.determinar_impacto(bandera_b);
+          fuerza_impacto_actual = proyectil_a.determinar_impacto(bandera_b);
+          if (fuerza_impacto_actual > 0) {
+            bandera_b.reducir_resistencia(fuerza_impacto_actual);
+          }
         }
         proyectil_a.actualizar_estado();
       }
@@ -261,25 +253,29 @@ void draw() {
         proyectil_b = null;
       } else {
         if (bandera_a != null) {
-          proyectil_b.determinar_impacto(bandera_a);
+          fuerza_impacto_actual = proyectil_b.determinar_impacto(bandera_a);
+          if (fuerza_impacto_actual > 0) {
+            bandera_a.reducir_resistencia(fuerza_impacto_actual);
+          }
         }
         proyectil_b.actualizar_estado();
       }
     }
-    
+
     // Se actualiza el estado de los canones
     canon_a.mostrar(angulo_a);
     canon_b.mostrar(angulo_b);
+    anunciador.mostrar_mensaje(fuerza_impacto_actual);
     
     // Manejo de la musica mientras las banderas existan
     if (bandera_a != null && bandera_b != null) {
-      boolean batalla_normal = bandera_a.obtener_intensidad_batalla() == "normal" || bandera_b.obtener_intensidad_batalla() == "normal";
-      boolean batalla_acelerada = bandera_a.obtener_intensidad_batalla() == "inestable" || bandera_b.obtener_intensidad_batalla() == "inestable";
-      boolean batalla_intensa = bandera_a.obtener_intensidad_batalla() == "critico" || bandera_b.obtener_intensidad_batalla() == "critico";
-
-      if (batalla_normal) {
+      boolean batalla_normal = (bandera_a.obtener_intensidad_batalla().equals("normal") || bandera_b.obtener_intensidad_batalla().equals("normal"));
+      boolean batalla_acelerada = bandera_a.obtener_intensidad_batalla().equals("inestable") || bandera_b.obtener_intensidad_batalla().equals("inestable");
+      boolean batalla_intensa = bandera_a.obtener_intensidad_batalla().equals("critico") || bandera_b.obtener_intensidad_batalla().equals("critico");
+    
+      if (batalla_normal && !batalla_acelerada && !batalla_intensa) {
         gestor_audio.reproducion_solitaria_cancion("batalla_normal");
-      } else if (batalla_acelerada) {
+      } else if (batalla_acelerada && !batalla_intensa) {
         gestor_audio.reproducion_solitaria_cancion("batalla_acelerada");
       } else if (batalla_intensa) {
         gestor_audio.reproducion_solitaria_cancion("batalla_intensa");

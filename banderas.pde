@@ -28,7 +28,7 @@ class Bandera extends Entidad {
       break;
     case "explotando":
       gestor_audio.reproducir_efecto_sonido("explosion_intensa");
-      animacion_explosion.mostrar(pos_x, pos_y);
+      animacion_explosion.mostrar(pos_x, pos_y + 35);
       break;
     }
   }

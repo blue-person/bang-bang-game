@@ -61,7 +61,22 @@ class FadeIn {
     rect(0, 0, width, height);
     pop();
   }
-
+  
+  void mostrar(PImage imagen, float pos_x, float pos_y, int escala_horizontal) {
+    // Cambiar opacidad
+    if (opacidad < 255) {
+      opacidad += velocidad;
+    }
+    
+    // Mostrar efecto
+    push();
+    imageMode(CENTER);
+    tint(255, opacidad);
+    imagen.resize(escala_horizontal, 0);
+    image(imagen, pos_x, pos_y);
+    pop();
+  }
+  
   boolean efecto_terminado() {
     return (opacidad >= 255);
   }
@@ -96,6 +111,21 @@ class FadeOut {
     rectMode(CORNER);
     fill(color_transicion, opacidad);
     rect(0, 0, width, height);
+    pop();
+  }
+  
+  void mostrar(PImage imagen, float pos_x, float pos_y, int escala_horizontal) {
+    // Cambiar opacidad
+    if (opacidad > 0) {
+      opacidad -= velocidad;
+    }
+    
+    // Mostrar efecto
+    push();
+    imageMode(CENTER);
+    tint(255, opacidad);
+    imagen.resize(escala_horizontal, 0);
+    image(imagen, pos_x, pos_y);
     pop();
   }
 
