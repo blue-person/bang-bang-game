@@ -95,7 +95,7 @@ void draw() {
     pop();
 
     // Determinar estado
-    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_inicio()) {
+    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_inicio_presionado()) {
       gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
       permitir_transicion_juego = true;
     }
@@ -295,7 +295,7 @@ void draw() {
         if (existe_proyectil_a && proyectil_a.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_B;
         } else if (!existe_proyectil_a && bandera_a_no_explotando && bandera_b_no_explotando) {
-          if (gestor_controles.boton_presionado()) {
+          if (gestor_controles.boton_principal_presionado()) {
             FloatDict ubicacion_punta_canon = canon_a.obtener_ubicacion_punta();
             float pos_x = ubicacion_punta_canon.get("pos_x");
             float pos_y = ubicacion_punta_canon.get("pos_y");
@@ -310,7 +310,7 @@ void draw() {
         if (existe_proyectil_b && proyectil_b.obtener_estado().equals("explotando")) {
           jugador_actual = JUGADOR_A;
         } else if (!existe_proyectil_b && bandera_a_no_explotando && bandera_b_no_explotando) {
-          if (gestor_controles.boton_presionado()) {
+          if (gestor_controles.boton_principal_presionado()) {
             FloatDict ubicacion_punta_canon = canon_b.obtener_ubicacion_punta();
             float pos_x = ubicacion_punta_canon.get("pos_x");
             float pos_y = ubicacion_punta_canon.get("pos_y");
@@ -360,7 +360,7 @@ void draw() {
     pop();
     
     // Determinar estado
-    if (mostrar_resultados.efecto_terminado() && gestor_controles.boton_presionado()) {
+    if (mostrar_resultados.efecto_terminado() && gestor_controles.boton_principal_presionado()) {
       gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
       permitir_transicion_juego = true;
     }
