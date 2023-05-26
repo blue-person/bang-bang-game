@@ -106,7 +106,7 @@ void draw() {
     pop();
 
     // Determinar estado
-    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_presionado()) {
+    if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_inicio()) {
       gestor_audio.reproducir_efecto_sonido("confirmar_opcion");
       permitir_transicion_juego = true;
     }
@@ -123,7 +123,7 @@ void draw() {
 
         inicializar_elementos();
         permitir_transicion_juego = false;
-        estado_actual_juego = "resultados";
+        estado_actual_juego = "juego";
       }
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
