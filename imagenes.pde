@@ -37,6 +37,8 @@ class Imagen {
     cargar_tileset("muralla_derecha", 12);
     cargar_tileset("muralla_izquierda", 11);
     cargar_tileset("vegetacion", 4);
+    cargar_tileset("presiona_boton", 1);
+    cargar_tileset("ganador", 3);
   }
 
   void cargar_imagenes() {

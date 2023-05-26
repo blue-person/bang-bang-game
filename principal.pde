@@ -34,6 +34,10 @@ void draw() {
   // Declaracion de imagenes
   PImage logo_universidad = gestor_imagenes.obtener_imagen("logo_universidad");
   PImage logo_juego = gestor_imagenes.obtener_imagen("logo_juego");
+  PImage presiona_boton = gestor_imagenes.obtener_sprite("presiona_boton_0");
+  PImage mensaje_ganador = gestor_imagenes.obtener_sprite("ganador_2");
+  PImage nombre_jugador_azul = gestor_imagenes.obtener_sprite("ganador_0");
+  PImage nombre_jugador_rojo = gestor_imagenes.obtener_sprite("ganador_1");
   PImage nubes = gestor_imagenes.obtener_imagen("nubes");
   PImage monte_a = gestor_imagenes.obtener_imagen("monte_a");
   PImage monte_b = gestor_imagenes.obtener_imagen("monte_b");
@@ -97,11 +101,9 @@ void draw() {
     imageMode(CENTER);
     logo_juego.resize(700, 0);
     gestor_efectos.imagen_pulsante(logo_juego, width / 2, height / 4, escala_minima, escala_maxima);
+    presiona_boton.resize(500, 0);
+    gestor_efectos.imagen_pulsante(presiona_boton, width / 2, height / 2, escala_maxima, escala_minima);
     pop();
-
-    // Mostrar animacion para continuar
-    textAlign(CENTER);
-    text("Presiona el boton para continuar", width / 2, height / 1.5);
 
     // Determinar estado
     if (mostrar_inicio.efecto_terminado() && gestor_controles.boton_presionado()) {
@@ -121,7 +123,7 @@ void draw() {
 
         inicializar_elementos();
         permitir_transicion_juego = false;
-        estado_actual_juego = "juego";
+        estado_actual_juego = "resultados";
       }
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
@@ -343,15 +345,22 @@ void draw() {
     // Aplicar el fondo
     push();
     imageMode(CORNER);
-    //fondo_cuadros.resize(650, 0);
     gestor_efectos.imagen_infinita(fondo_cuadros, 0, 1);
     pop();
-
+    
+    // Determinar jugador
+    PImage nombre_jugador = null;
+    if (ganador == JUGADOR_A) {
+      nombre_jugador = nombre_jugador_rojo;
+    } else {
+      nombre_jugador = nombre_jugador_azul;
+    }
+    
     // Mostrar ganador
     push();
-    fill(255, 255);
-    textAlign(CENTER);
-    text("El ganador fue: " + ganador, width / 2, height / 2);
+    imageMode(CENTER);
+    gestor_efectos.imagen_pulsante(nombre_jugador, width / 2, height / 2.5, escala_minima, escala_maxima);
+    gestor_efectos.imagen_pulsante(mensaje_ganador, width / 2, height / 2, escala_minima, escala_maxima);
     pop();
     
     // Determinar estado
