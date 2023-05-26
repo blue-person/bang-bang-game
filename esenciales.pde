@@ -1,11 +1,12 @@
 // Constantes
 final float MASCARA_COLISION_PROYECTIL = 15;
-final float MASCARA_COLISION_BANDERA = 20;
+final float MASCARA_COLISION_BANDERA = 45;
 final float MASCARA_COLISION_CANON = 45;
 final float RESISTENCIA_BANDERAS = 15;
 
 final int COLOR_NEGRO = #323957;
-final int COLOR_BLANCO = #F1F1F1;
+final int COLOR_BLANCO = #f1f1f1;
+final int COLOR_NARANJA_CLARO = #fff1e6;
 final int COLOR_AZUL_CLARO = #6fd3ff;
 final int COLOR_AZUL_OSCURO = #5185d3;
 
@@ -81,12 +82,12 @@ void inicializar_elementos() {
   velocidad_b = 0;
 
   // Banderas
-  bandera_a = new Bandera(width / 4, height / 2, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_a");
-  bandera_b = new Bandera(width / 1.5, height / 2, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_b");
+  bandera_a = new Bandera(285, 169, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_a");
+  bandera_b = new Bandera(943, 307, RESISTENCIA_BANDERAS, MASCARA_COLISION_BANDERA, "bandera_b");
 
   // Canones
-  canon_a = new Canon(width / 4, height / 2.5, MASCARA_COLISION_CANON, IZQUIERDA, "canon_a");
-  canon_b = new Canon(width / 1.5, height / 2.5, MASCARA_COLISION_CANON, DERECHA, "canon_b");
+  canon_a = new Canon(208, 205, MASCARA_COLISION_CANON, IZQUIERDA, "canon_a");
+  canon_b = new Canon(1020, 343, MASCARA_COLISION_CANON, DERECHA, "canon_b");
 
   // Proyectiles
   proyectil_a = null;

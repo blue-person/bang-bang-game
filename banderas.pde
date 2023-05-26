@@ -13,18 +13,18 @@ class Bandera extends Entidad {
     super(pos_x, pos_y, mascara_colision);
     this.resistencia_actual = resistencia;
     this.resistencia_total = resistencia;
-    this.animacion_bandera = new Animacion(animacion_bandera, 6);
+    this.animacion_bandera = new Animacion(animacion_bandera, 18);
   }
 
   // Metodos
   void mostrar() {
     switch (estado_actual) {
     case "normal":
-      animacion_bandera.mostrar(pos_x, pos_y);
+      animacion_bandera.mostrar(pos_x - 15, pos_y + 15, IZQUIERDA);
       break;
     case "impactado":
-      animacion_bandera.mostrar(pos_x, pos_y);
-      animacion_fuego.mostrar(pos_x - 3, pos_y - 25);
+      animacion_bandera.mostrar(pos_x - 15, pos_y + 15, IZQUIERDA);
+      animacion_fuego.mostrar(pos_x - 8, pos_y - 30);
       break;
     case "explotando":
       gestor_audio.reproducir_efecto_sonido("explosion_intensa");

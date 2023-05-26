@@ -17,9 +17,10 @@ void setup() {
   frameRate(60);
   
   // Pre-cargar elementos
-  gestor_audio.cargar_efectos_sonido();
   gestor_audio.cargar_canciones();
+  gestor_audio.cargar_efectos();
   gestor_imagenes.cargar_imagenes();
+  gestor_imagenes.cargar_sprites();
   
   // Cargar elementos
   inicializar_efectos();
@@ -31,13 +32,13 @@ void draw() {
   noTint();
   
   // Declaracion de imagenes
-  PImage logo_universidad = imagenes.get("logo_universidad_0");
-  PImage logo_juego = imagenes.get("logo_juego_0");
-  PImage nubes = imagenes.get("nubes_0");
-  PImage monte_a = imagenes.get("monte_a_0");
-  PImage monte_b = imagenes.get("monte_b_0");
-  PImage monte_c = imagenes.get("monte_c_0");
-  PImage fondo_cuadros = imagenes.get("fondo_cuadros_0");
+  PImage logo_universidad = gestor_imagenes.obtener_imagen("logo_universidad");
+  PImage logo_juego = gestor_imagenes.obtener_imagen("logo_juego");
+  PImage nubes = gestor_imagenes.obtener_imagen("nubes");
+  PImage monte_a = gestor_imagenes.obtener_imagen("monte_a");
+  PImage monte_b = gestor_imagenes.obtener_imagen("monte_b");
+  PImage monte_c = gestor_imagenes.obtener_imagen("monte_c");
+  PImage fondo_cuadros = gestor_imagenes.obtener_imagen("fondo_cuadros");
 
   // Determinar estado
   switch (estado_actual_juego) {
@@ -76,7 +77,7 @@ void draw() {
     // Mostrar los fondos
     push();
     imageMode(CORNER);
-    tint(255, 255);
+    tint(COLOR_NARANJA_CLARO);
     gestor_efectos.imagen_infinita(monte_c, height / 1.65, 0.90);
     gestor_efectos.imagen_infinita(monte_b, height / 1.75, 0.75);
     gestor_efectos.imagen_infinita(monte_a, height / 1.50, 0.60);
@@ -120,7 +121,7 @@ void draw() {
 
         inicializar_elementos();
         permitir_transicion_juego = false;
-        estado_actual_juego = "resultados";
+        estado_actual_juego = "juego";
       }
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
@@ -137,13 +138,81 @@ void draw() {
     // Mostrar los fondos
     push();
     imageMode(CORNER);
-    tint(255, 255);
+    tint(COLOR_NARANJA_CLARO);
     gestor_efectos.imagen_infinita(monte_c, height / 1.65, 0);
     gestor_efectos.imagen_infinita(monte_b, height / 1.75, 0);
     gestor_efectos.imagen_infinita(monte_a, height / 1.50, 0);
     tint(255, 135);
     gestor_efectos.imagen_infinita(nubes, 35, 1.25);
     gestor_efectos.imagen_infinita(nubes, 195, 1.50);
+    pop();
+    
+    // Muralla derecha
+    push();
+    imageMode(CORNER);
+    // Parte superior
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_8"), 128, 102);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_9"), 0, 102);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_10"), 128, -26);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_11"), 0, -26);
+    
+    // Parte inferior
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_0"), 256, 198);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_1"), 192, 326);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_2"), 192, 454);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_2"), 192, 582);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_2"), 192, 710);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_5"), 64, 326);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), 64, 454);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_4"), 64, 582);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), 64, 710);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), -64, 326);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), -64, 454);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), -64, 582);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_3"), -64, 710);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_6"), 128, 198);
+    image(gestor_imagenes.obtener_sprite("muralla_derecha_6"), 0, 198);
+    
+    // Decoracion
+    image(gestor_imagenes.obtener_sprite("vegetacion_1"), 230, 102);
+    image(gestor_imagenes.obtener_sprite("vegetacion_2"), 32, 102);
+    pop();
+    
+    // Muralla izquierda
+    push();
+    imageMode(CORNER);
+    // Parte superior
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_0"), 896, -112);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1024, -112);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1088, -112);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1152, -112);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_6"), 960, 272);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_7"), 960, 144);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_8"), 960, 16);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_9"), 1088, 16);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_10"), 1088, 144);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_10"), 1088, 272);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_9"), 1216, 16);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_10"), 1216, 144);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_10"), 1216, 272);
+    
+    // Parte inferior
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_0"), 832, 336);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_1"), 832, 464);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_1"), 832, 592);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_2"), 960, 592);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 960, 464);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_5"), 960, 336);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_4"), 1088, 464);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1216, 464);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1088, 592);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_3"), 1216, 592);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_5"), 1088, 336);
+    image(gestor_imagenes.obtener_sprite("muralla_izquierda_5"), 1216, 336);
+    
+    // Decoracion
+    image(gestor_imagenes.obtener_sprite("vegetacion_0"), 864,  240);
+    image(gestor_imagenes.obtener_sprite("vegetacion_3"), 1152,  240);
     pop();
     
     // Bandera A
