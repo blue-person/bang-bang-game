@@ -15,7 +15,7 @@ void setup() {
 
   // Configuracion del proyecto
   frameRate(60);
-
+  
   // Pre-cargar elementos
   gestor_audio.cargar_efectos_sonido();
   gestor_audio.cargar_canciones();
@@ -37,6 +37,7 @@ void draw() {
   PImage monte_a = imagenes.get("monte_a_0");
   PImage monte_b = imagenes.get("monte_b_0");
   PImage monte_c = imagenes.get("monte_c_0");
+  PImage fondo_cuadros = imagenes.get("fondo_cuadros_0");
 
   // Determinar estado
   switch (estado_actual_juego) {
@@ -119,7 +120,7 @@ void draw() {
 
         inicializar_elementos();
         permitir_transicion_juego = false;
-        estado_actual_juego = "juego";
+        estado_actual_juego = "resultados";
       }
     } else {
       gestor_audio.reproducir_cancion("menu_inicio");
@@ -271,14 +272,18 @@ void draw() {
     break;
   case "resultados":
     // Aplicar el fondo
-    background(COLOR_AZUL_CLARO);
+    push();
+    imageMode(CORNER);
+    //fondo_cuadros.resize(650, 0);
+    gestor_efectos.imagen_infinita(fondo_cuadros, 0, 1);
+    pop();
 
     // Mostrar ganador
     push();
-    fill(0, 255);
+    fill(255, 255);
     textAlign(CENTER);
-    pop();
     text("El ganador fue: " + ganador, width / 2, height / 2);
+    pop();
     
     // Determinar estado
     if (mostrar_resultados.efecto_terminado() && gestor_controles.boton_presionado()) {
@@ -306,5 +311,7 @@ void draw() {
     
     // Efecto de fade-out al iniciar el estado
     mostrar_resultados.mostrar();
+    
+    break;
   }
 }

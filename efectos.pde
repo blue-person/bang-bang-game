@@ -16,12 +16,14 @@ class Efecto {
   }
   
   void fondo_degradado(int color_a, int color_b) {
+    push();
     for (int pos_y = 0; pos_y < height; pos_y++) {
       float interseccion = map(pos_y, 0, height, 1, 0);
       color color_degradado = lerpColor(color_a, color_b, interseccion);
       stroke(color_degradado);
       line(0, pos_y, width, pos_y);
     }
+    pop();
   }
   
   void imagen_infinita(PImage imagen, float pos_y, float velocidad) {

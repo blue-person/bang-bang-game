@@ -11,8 +11,11 @@ class Control {
   }
   
   boolean boton_presionado() {
+    /*
     String[] valores_puerto_serial = texto_puerto_serial.split(",");
     boolean boton_presionado = int(valores_puerto_serial[0]) == 1;
+    */
+    boolean boton_presionado = (keyPressed) && (key == ENTER);
     return boton_presionado;
   }
 

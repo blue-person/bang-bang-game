@@ -32,5 +32,6 @@ class Imagen {
     cargar_sprites("monte_b", 1);
     cargar_sprites("monte_c", 1);
     cargar_sprites("nubes", 1);
+    cargar_sprites("fondo_cuadros", 1);
   }
 }
