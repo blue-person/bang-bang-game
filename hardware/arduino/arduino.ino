@@ -31,7 +31,7 @@ void setup() {
 
 void loop() {
   delay(250);
-
+  digitalWrite(13,LOW);
   VPV_1 = analogRead(0);
   VPA_1 = analogRead(1);
   velocidad = map(VPV_1, min, max, 0, 150);
@@ -41,6 +41,7 @@ void loop() {
 
   if (digitalRead(botonF) == HIGH) {
     boton_presionado = 1;
+    digitalWrite(13,HIGH);
     if (turno % 2 == 0) {
       motor1.write(angulo_f1);
       turno++;
