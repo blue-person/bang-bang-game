@@ -16,17 +16,19 @@ class Efecto {
   }
   
   void fondo_degradado(int color_a, int color_b) {
+    push();
     for (int pos_y = 0; pos_y < height; pos_y++) {
       float interseccion = map(pos_y, 0, height, 1, 0);
       color color_degradado = lerpColor(color_a, color_b, interseccion);
       stroke(color_degradado);
       line(0, pos_y, width, pos_y);
     }
+    pop();
   }
   
   void imagen_infinita(PImage imagen, float pos_y, float velocidad) {
-    float desplazamiento = (frameCount * velocidad) % imagen.width;
-    for (float pos_x = -desplazamiento; pos_x < width; pos_x += imagen.width) {
+    int desplazamiento = int(frameCount * velocidad) % imagen.width;
+    for (int pos_x = -desplazamiento; pos_x < width; pos_x += imagen.width) {
       image(imagen, pos_x, pos_y);
     }
   }
@@ -59,7 +61,22 @@ class FadeIn {
     rect(0, 0, width, height);
     pop();
   }
-
+  
+  void mostrar(PImage imagen, float pos_x, float pos_y, int escala_horizontal) {
+    // Cambiar opacidad
+    if (opacidad < 255) {
+      opacidad += velocidad;
+    }
+    
+    // Mostrar efecto
+    push();
+    imageMode(CENTER);
+    tint(255, opacidad);
+    imagen.resize(escala_horizontal, 0);
+    image(imagen, pos_x, pos_y);
+    pop();
+  }
+  
   boolean efecto_terminado() {
     return (opacidad >= 255);
   }
@@ -94,6 +111,21 @@ class FadeOut {
     rectMode(CORNER);
     fill(color_transicion, opacidad);
     rect(0, 0, width, height);
+    pop();
+  }
+  
+  void mostrar(PImage imagen, float pos_x, float pos_y, int escala_horizontal) {
+    // Cambiar opacidad
+    if (opacidad > 0) {
+      opacidad -= velocidad;
+    }
+    
+    // Mostrar efecto
+    push();
+    imageMode(CENTER);
+    tint(255, opacidad);
+    imagen.resize(escala_horizontal, 0);
+    image(imagen, pos_x, pos_y);
     pop();
   }
 

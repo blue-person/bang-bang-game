@@ -11,7 +11,7 @@ class Animacion {
 
     for (int i = 0; i < cantidad_imagenes; i++) {
       String nombre_archivo = nombre_elemento + "_" + str(i);
-      lista_imagenes[i] = imagenes.get(nombre_archivo);
+      lista_imagenes[i] = gestor_imagenes.obtener_sprite(nombre_archivo);
     }
   }
 
@@ -21,9 +21,8 @@ class Animacion {
     
     push();
     imageMode(CENTER);
-    pop();
-    
     image(lista_imagenes[indice_actual], pos_x, pos_y);
+    pop();
   }
 
   void mostrar(float pos_x, float pos_y, int direccion) {
@@ -31,12 +30,11 @@ class Animacion {
     
     push();
     imageMode(CENTER);
-    pop();
-    
     pushMatrix();
     scale(direccion, 1);
     image(lista_imagenes[indice_actual], direccion * pos_x, pos_y);
     popMatrix();
+    pop();
   }
 
   boolean animacion_termino() {

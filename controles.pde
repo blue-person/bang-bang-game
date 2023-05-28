@@ -1,32 +1,35 @@
 class Control {
   // Variables
-  float angulo_seleccionado = 0;
-  
+  String texto_puerto_serial = "0,-45,0";
+
   // Constructor
   Control() {}
   
   // Metodos
-  boolean boton_presionado() {
-    return (keyPressed) && (key == ENTER);
+  void establecer_texto_serial(String texto_obtenido) {
+    texto_puerto_serial = texto_obtenido;
   }
   
+  boolean boton_inicio_presionado() {
+   boolean boton_presionado = (keyPressed) && (key == ENTER); 
+   return boton_presionado;
+  }
+  
+  boolean boton_principal_presionado() {
+    String[] valores_puerto_serial = texto_puerto_serial.split(",");
+    boolean boton_presionado = int(valores_puerto_serial[0]) == 1;
+    return boton_presionado;
+  }
+ 
   float obtener_valor_angulo() {
-    if (angulo_seleccionado > 50) {
-      angulo_seleccionado = -45;
-    } else {
-      angulo_seleccionado++;
-    }
+    String[] valores_puerto_serial = texto_puerto_serial.split(",");
+    float angulo_seleccionado = float(valores_puerto_serial[1]);
     return angulo_seleccionado;
   }
   
   float obtener_valor_velocidad() {
-    return 45;
+    String[] valores_puerto_serial = texto_puerto_serial.split(",");
+    float velocidad_seleccionada = float(valores_puerto_serial[2]);
+    return velocidad_seleccionada;
   }
 }
-
-/*
-String texto_puerto_serial = "-45, 45";
-String[] valores_puerto_serial = texto_puerto_serial.split(", ");
-float angulo_seleccionado = float(valores_puerto_serial[0]);
-float velocidad_seleccionada = float(valores_puerto_serial[1]);
-*/
